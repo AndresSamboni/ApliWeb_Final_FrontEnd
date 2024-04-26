@@ -27,7 +27,6 @@ Sigue los siguientes lineamientos con el objetivo de tener un código limpio, le
 > - Los nombres de los componentes serán definidos en formato _CamelCase_.
 > - Los nombres de los componentes deben ser escritos en ingles.
 > - Los nombres de los componentes deben iniciar con el primer carácter en mayúscula.
-> - Los atributos propios de los componentes deben ser escritos con el tipo de visibilidad necesario.
 > - Los atributos de los componentes siguen los lineamientos definidos para las variables.
 
 > [!NOTE] #<FONT COLOR='red'>**_CLASES DE ESTILO_**</FONT>
