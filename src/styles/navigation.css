@@ -1,0 +1,4 @@
+a:hover{
+    text-shadow: 2px 2px 2px red;
+    transition: 300ms;
+}
