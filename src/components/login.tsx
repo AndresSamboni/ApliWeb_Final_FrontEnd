@@ -5,7 +5,9 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [usernameFocused, setUsernameFocused] = useState(false);
+    const [passwordFocused, setPasswordFocused] = useState(false);
     const usernameRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -24,9 +26,19 @@ const Login = () => {
         setUsernameFocused(true);
     };
 
+    const handlePasswordClick = () => {
+        setPasswordFocused(true);
+    };
+
     const handleUsernameBlur = () => {
         if (!username && usernameRef.current) {
             setUsernameFocused(false);
+        }
+    };
+
+    const handlePasswordBlur = () => {
+        if (!password && passwordRef.current) {
+            setPasswordFocused(false);
         }
     };
 
@@ -37,6 +49,11 @@ const Login = () => {
                     setUsernameFocused(false);
                 }
             }
+            if (passwordRef.current && !passwordRef.current.contains(event.target as Node)) {
+                if (!password) {
+                    setPasswordFocused(false);
+                }
+            }
         };
 
         window.addEventListener('click', handleWindowClick);
@@ -44,7 +61,7 @@ const Login = () => {
         return () => {
             window.removeEventListener('click', handleWindowClick);
         };
-    }, [username]);
+    }, [username, password]);
 
     return (
         <div className="flex justify-center items-center h-screen bg-gray-200">
@@ -71,14 +88,23 @@ const Login = () => {
                             ref={usernameRef} 
                         />
                     </div>
-                    <div className="mb-4">
-                        <label htmlFor="password" className="block text-black mb-2">Contraseña</label>
+                    <div className="mb-4 relative">
+                        {passwordFocused || password ? (
+                            <label className="block text-black mb-2" htmlFor="password">Contraseña</label>
+                        ) : (
+                            <label className="absolute top-1/2 left-2 transform -translate-y-1/2 text-gray-400 text-xs transition-all duration-300" htmlFor="password">
+                                CONTRASEÑA
+                            </label>
+                        )}
                         <input 
                             type="password" 
                             value={password} 
                             onChange={(e) => setPassword(e.target.value)} 
-                            className="w-full p-2 rounded-md border border-gray-300 bg-gray-100" 
+                            onClick={handlePasswordClick} 
+                            onBlur={handlePasswordBlur} 
+                            className="w-full p-2 rounded-md border border-gray-300 bg-gray-100 pl-10" 
                             id="password" 
+                            ref={passwordRef} 
                         />
                     </div>
                     <div className="text-center mb-4">
