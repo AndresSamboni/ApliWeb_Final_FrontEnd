@@ -1,4 +1,5 @@
 import { useState, FormEvent, useEffect, useRef } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Importa los íconos de ojo
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -91,33 +92,33 @@ const Login = () => {
                         />
                     </div>
                     <div className="mb-4 relative">
-                        {passwordFocused || password ? (
-                            <label className="block text-black mb-2" htmlFor="password">Contraseña</label>
-                        ) : (
-                            <label className="absolute top-1/2 left-2 transform -translate-y-1/2 text-gray-400 text-xs transition-all duration-300" htmlFor="password">
-                                CONTRASEÑA
-                            </label>
-                        )}
-                        <input 
-                            type={showPassword ? 'text' : 'password'} 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
-                            onClick={handlePasswordClick} 
-                            onBlur={handlePasswordBlur} 
-                            className="w-full p-2 rounded-md border border-gray-300 bg-gray-100 pl-10" 
-                            id="password" 
-                            ref={passwordRef} 
-                        />
-                    </div>
-                    <div className="flex items-center mb-4">
-                        <input 
-                            type="checkbox" 
-                            id="showPassword" 
-                            checked={showPassword} 
-                            onChange={() => setShowPassword(!showPassword)} 
-                        />
-                        <label htmlFor="showPassword" className="ml-2 text-sm" style={{fontSize: '13px'}}>Mostrar contraseña</label>
-                    </div>
+    {passwordFocused || password ? (
+        <label className="block text-black mb-2" htmlFor="password">Contraseña</label>
+    ) : (
+        <label className="absolute top-1/2 left-2 transform -translate-y-1/2 text-gray-400 text-xs transition-all duration-300" htmlFor="password">
+            CONTRASEÑA
+        </label>
+    )}
+    <input 
+        type={showPassword ? 'text' : 'password'} 
+        value={password} 
+        onChange={(e) => setPassword(e.target.value)} 
+        onClick={handlePasswordClick} 
+        onBlur={handlePasswordBlur} 
+        className="w-full p-2 rounded-md border border-gray-300 bg-gray-100 pl-10 pr-10" 
+        id="password" 
+        ref={passwordRef} 
+    />
+    <button 
+        type="button" 
+        className={`absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 focus:outline-none ${passwordFocused ? 'mt-8' : ''}`}
+        onClick={() => setShowPassword(!showPassword)}
+    >
+        {showPassword ? <FaEyeSlash /> : <FaEye />}
+    </button>    
+</div>
+
+                    
                     <div className="text-right mb-4">
                         <a href="#" className="text-blue-500 text-sm">¿Olvidaste tu contraseña?</a>
                     </div>
