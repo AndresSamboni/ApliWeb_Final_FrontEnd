@@ -6,6 +6,7 @@ const Login = () => {
     const [error, setError] = useState('');
     const [usernameFocused, setUsernameFocused] = useState(false);
     const [passwordFocused, setPasswordFocused] = useState(false);
+    const [showPassword, setShowPassword] = useState(false); // Estado para controlar si se muestra la contraseña
     const usernameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -97,7 +98,7 @@ const Login = () => {
                             </label>
                         )}
                         <input 
-                            type="password" 
+                            type={showPassword ? 'text' : 'password'} 
                             value={password} 
                             onChange={(e) => setPassword(e.target.value)} 
                             onClick={handlePasswordClick} 
@@ -107,8 +108,17 @@ const Login = () => {
                             ref={passwordRef} 
                         />
                     </div>
-                    <div className="text-center mb-4">
-                        <a href="#" className="text-blue-500">Olvidó su contraseña?</a>
+                    <div className="flex items-center mb-4">
+                        <input 
+                            type="checkbox" 
+                            id="showPassword" 
+                            checked={showPassword} 
+                            onChange={() => setShowPassword(!showPassword)} 
+                        />
+                        <label htmlFor="showPassword" className="ml-2 text-sm" style={{fontSize: '13px'}}>Mostrar contraseña</label>
+                    </div>
+                    <div className="text-right mb-4">
+                        <a href="#" className="text-blue-500 text-sm">¿Olvidaste tu contraseña?</a>
                     </div>
                     <button type="submit" className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-300">Crear Usuario</button>
                 </form>
