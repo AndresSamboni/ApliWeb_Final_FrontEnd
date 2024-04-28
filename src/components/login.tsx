@@ -67,7 +67,7 @@ const Login = () => {
     return (
         <div className="flex justify-center items-center h-screen bg-gray-200">
             <div className='bg-white border border-gray-400 rounded-md p-8 shadow-lg'>
-                <h1 className='text-center text-black font-bold mb-4'>INICIO DE SESION</h1>
+                <h1 className='text-center text-black font-bold mb-4'>INICIO DE SESIÓN</h1>
                 <form onSubmit={handleSubmit}>
                     {error && <div className="text-red-500 mb-4">{error}</div>}
                     <div className="mb-4 relative">
@@ -83,7 +83,8 @@ const Login = () => {
                             value={username} 
                             onChange={(e) => setUsername(e.target.value)} 
                             onClick={handleUsernameClick} 
-                            onBlur={handleUsernameBlur} 
+                            onBlur={handleUsernameBlur}
+                            maxLength={40} // Limita la longitud máxima del campo a 40 caracteres 
                             className="w-full p-2 rounded-md border border-gray-300 bg-gray-100 pl-10" 
                             id="username" 
                             ref={usernameRef} 
