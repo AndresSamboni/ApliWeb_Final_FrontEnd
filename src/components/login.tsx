@@ -110,7 +110,7 @@ const Login = () => {
                     <div className="text-center mb-4">
                         <a href="#" className="text-blue-500">Olvidó su contraseña?</a>
                     </div>
-                    <button type="submit" className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Login</button>
+                    <button type="submit" className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-300">Crear Usuario</button>
                 </form>
             </div>
         </div>
