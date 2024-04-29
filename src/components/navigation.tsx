@@ -1,22 +1,47 @@
 //IMPORTS
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom'
 import logo from '../assets/img/logo.webp';
 import '../styles/navigation.css'
 
+//CREATE THE INTERFACE TO PASS LINKs TO THE MAIN FILE
+interface NavigationProps {
+  readonly onGetLinks: (links: { src: string; name: string; component: string; }[]) => void;
+}
+
 //CREATE THE NAVIGATION COMPONENT
-function Navigation() {
+function Navigation({ onGetLinks }: NavigationProps) {
     //DEFAULT VARIABLES AND CONSTANTS
-    const size = 40;
-    const links = [{ src:'/', name:'Inicio' }, { src:'/roles', name:'Roles' }, { src:'/documents', name:'Documentos' }];
-    const [selectRoute, setSelectRoute] = useState<string>(links[0].src);
+    const size: number = 40;
+    const userRole = 'sa';
+    const links = useMemo(() => [
+        { src: '/', name: 'Inicio', component: 'Home' },
+        { src: '/roles', name: 'Roles', component: 'Role' },
+        { src: '/documents', name: 'Documentos', component: 'Document' }
+    ], []);
+    const [selectRoute, setSelectRoute] = useState<string>('');
     const [windowWidth, setWindowWidth] = useState<number>(0);
     const [stateMenu, setStateMenu] = useState<boolean>(false);
-    //VALIDATIONS
-    const userRole = 'sa';
-    if (userRole === 'sa') {
-        links.push({ src:'/users', name:'Usuarios' });
+    const location = useLocation();
+    //PASS THE LINKS TO THE MAIN FILE
+    useEffect(() => {
+        onGetLinks(links);
+    }, [onGetLinks, links]);
+    //SELECT THE CORRECT ROUTE WHEN THE PAGE LOADS
+    useEffect(() => {
+        const pathname = location.pathname;
+        const defaultRoute = links.find(link => link.src === pathname);
+        if (defaultRoute) {
+            setSelectRoute(defaultRoute.src);
+        } else {
+            setSelectRoute(links[0].src); // <-- Selecciona la primera ruta si no coincide con ninguna
+        }
+    }, [location, links]);
+    //VALIDATION TO ACCESS THE PATH USERS
+    if (userRole === 'sa' && links.length === 3) {
+        links.push({ src:'/users', name:'Usuarios', component: 'Home' });
     }
+    //VALIDATION TO KNOW THE SCREEN WIDTH
     useEffect(() => {
         const handleResize = () => {
         setWindowWidth(window.innerWidth);
@@ -39,9 +64,9 @@ function Navigation() {
                         <img src={logo} alt="Logo" width={size} height={size} />
                     </section>
                     <section className='flex justify-between w-5/6'>
-                        {links.map((link, index) => (
+                        {links.map(link => (
                             <Link
-                                key={index}
+                                key={link.src}
                                 to={link.src}
                                 className={`flex items-center justify-center hover:transition hover:duration-300 hover:text-xl hover:bg-link-bg w-1/3
                                 ${selectRoute === link.src ? 'text-xl text-white bg-link-bg border-b-4 border-link-border' : 'text-sm'}`
@@ -68,9 +93,9 @@ function Navigation() {
                     </article>
                     {stateMenu ? (
                         <section>
-                            {links.map((link, index) => (
+                            {links.map(link => (
                                 <a
-                                    key={index}
+                                    key={link.src}
                                     href={link.src}
                                     className={`flex items-center justify-center hover:transition hover:duration-300 hover:text-xl hover:bg-link-bg w-1/3
                                     ${selectRoute === link.src ? 'text-xl text-white bg-link-bg border-b-4 border-link-border' : 'text-sm'}`
