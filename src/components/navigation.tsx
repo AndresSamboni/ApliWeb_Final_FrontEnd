@@ -93,11 +93,12 @@ function Navigation({ onGetLinks }: NavigationProps) {
                     </article>
                     {stateMenu ? (
                         <section>
+                    <hr className='p-0 mx-0 my-2 blurred'/>
                             {links.map(link => (
                                 <a
                                     key={link.src}
                                     href={link.src}
-                                    className={`flex items-center justify-center hover:transition hover:duration-300 hover:text-xl hover:bg-link-bg w-1/3
+                                    className={`flex items-center justify-center hover:transition hover:duration-300 hover:text-xl hover:bg-link-bg w-full
                                     ${selectRoute === link.src ? 'text-xl text-white bg-link-bg border-b-4 border-link-border' : 'text-sm'}`
                                     }
                                     onClick={() => setSelectRoute(link.src)}
