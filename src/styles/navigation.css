@@ -1,0 +1,8 @@
+/* En tu archivo de estilos (navigation.css) */
+.blurred {
+    border: none;
+    height: 1px;
+    /* Altura del hr */
+    background-image: linear-gradient(to right, #855e6e, #ffdbd7 ,#b42529, #ffdbd7, #855e6e);
+    /* Degradado horizontal */
+}
