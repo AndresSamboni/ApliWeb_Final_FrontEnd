@@ -1,5 +1,6 @@
 import { useState, FormEvent, useEffect, useRef } from 'react';
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Importa los íconos de ojo
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { signIn } from './signIn'; // Importa la función signIn
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -7,11 +8,12 @@ const Login = () => {
     const [error, setError] = useState('');
     const [usernameFocused, setUsernameFocused] = useState(false);
     const [passwordFocused, setPasswordFocused] = useState(false);
-    const [showPassword, setShowPassword] = useState(false); // Estado para controlar si se muestra la contraseña
+    const [showPassword, setShowPassword] = useState(false);
+    const [isSignIn, setIsSignIn] = useState(false); // Nueva variable de estado
     const usernameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!username && !password) {
             setError('Ingrese usuario y contraseña.');
@@ -20,9 +22,19 @@ const Login = () => {
         } else if (!password) {
             setError('Ingrese su contraseña.');
         } else {
-            setError('');
+            // Llama a la función signIn para autenticar al usuario
+            const { success, error } = await signIn(username, password);
+            if (success) {
+                // Usuario autenticado
+                setError('');
+                setIsSignIn(true); // Establece isSignIn en true
+            } else {
+                // Error de autenticación
+                setIsSignIn(false); // Establece isSignIn en false
+                setError(error || 'Nombre de usuario o contraseña incorrectos.');
+            }
         }
-    };
+    }
 
     const handleUsernameClick = () => {
         setUsernameFocused(true);
@@ -65,6 +77,13 @@ const Login = () => {
         };
     }, [username, password]);
 
+    if (isSignIn) {
+        return(
+            <div>
+                <h1>Bienvenido</h1>
+            </div>
+        );
+    }
     return (
         <div className="flex justify-center items-center h-screen bg-gray-200">
             <div className='bg-white border border-gray-400 rounded-md p-8 shadow-lg'>
