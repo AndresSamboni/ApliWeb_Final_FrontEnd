@@ -1,0 +1,18 @@
+[
+    {
+      "username": "usuario1",
+      "password": "contraseña1",
+      "state": true
+    },
+    {
+      "username": "usuario2",
+      "password": "contraseña2",
+      "state": false
+    },
+    {
+      "username": "usuario3",
+      "password": "contraseña3",
+      "state": true
+    }
+  ]
+  
