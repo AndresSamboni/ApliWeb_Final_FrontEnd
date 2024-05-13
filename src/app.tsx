@@ -4,7 +4,7 @@ import Navigation from "./components/navigation";
 import Home from "./components/home";
 import Role from "./components/role";
 import Document from "./components/document";
-import User from "./components/user";
+import Gestion from "./components/gestionUsers";
 import Login from "./components/login";
 
 interface Link {
@@ -36,7 +36,7 @@ function App() {
                                 <Route path={links[1].src} element={<Role />} />
                                 <Route path={links[2].src} element={<Document />} />
                                 {links.length > 3 && (
-                                    <Route path={links[3].src} element={<User />} />
+                                    <Route path={links[3].src} element={<Gestion />} />
                                 )}
                             </Routes>
                         </main>
