@@ -35,13 +35,15 @@ function Gestion() {
 
     return (
         <div className="w-80 md:w-full mx-auto p-10 mt-15 mb-15">
-            <h1 className="text-2xl font-bold mb-8">Gestión de Usuarios</h1>
-            <button
-                className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-                onClick={handleOpenModal}
-            >
-                Crear usuario
-            </button>
+            <div className="flex justify-between items-center mb-8">
+                <h1 className="text-2xl font-bold">Gestión de Usuarios</h1>
+                <button
+                    className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                    onClick={handleOpenModal}
+                >
+                    Crear usuario
+                </button>
+            </div>
             {/* Modal de creación de usuario */}
             {modalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
