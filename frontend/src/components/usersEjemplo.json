@@ -1,0 +1,49 @@
+[
+    {
+      "username": "usuario1",
+      "password": "contraseña1",
+
+      "name": "Edwin Andres",
+      "last_name": "Samboni Ortiz",
+      "document_type": "CC",
+      "document_number":"10029663467",
+      "gender":"Femenino",
+      "email": "edwin.samboni@gmail.com",
+      "phone": "193712213",
+      "birthDate": "01/01/2000",
+      
+
+      "state": true
+    },
+    {
+      "username": "usuario2",
+      "password": "contraseña2",
+
+      "name": "Pablo Cesar",
+      "last_name": "Garzon Benitez",
+      "document_type": "CC",
+      "document_number":"10029662267",
+      "gender":"Masculino",
+      "email": "pablito@gmail.com",
+      "phone": "423563463",
+      "birthDate": "02/02/2002",
+
+      "state": false
+    },
+    {
+      "username": "usuario3",
+      "password": "contraseña3",
+
+      "name": "Juan Carlos",
+      "last_name": "Locomotora",
+      "document_type": "TI",
+      "document_number":"165535456",
+      "gender":"No definido",
+      "email": "elelle@gmail.com",
+      "phone": "78632874638",
+      "birthDate": "05/07/2024",
+
+      "state": true
+    }
+  ]
+  

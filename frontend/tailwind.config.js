@@ -25,7 +25,7 @@ export default {
       'table-border': '',
       //Buttons
       'subtmit': '#3c8f2e',
-      'info': '#040174',
+      'modify': '#040174',
       'delete':'#800803',
     },
     extend: {},
