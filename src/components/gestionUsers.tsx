@@ -1,7 +1,7 @@
 import { useState} from 'react';
 import usersData from './usersEjemplo.json';
 import { Trash2, Edit, Eye } from 'react-feather';
-import User from './user';
+import User from './verUser';
 
 function Gestion() {
     const [modalOpen, setModalOpen] = useState(false);
