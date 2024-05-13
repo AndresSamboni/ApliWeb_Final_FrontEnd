@@ -1,5 +1,7 @@
+<link rel="stylesheet" href="https://unpkg.com/feather-icons/dist/feather.css"></link>
 import { useState, useEffect } from 'react';
 import usersData from './usersEjemplo.json';
+import { Trash2, Edit, Eye } from 'react-feather'; // Importar iconos de Feather Icons
 
 // Definir una interfaz para la estructura de los datos de usuario
 interface User {
@@ -22,7 +24,7 @@ function Gestion() {
 
     useEffect(() => {
         // Cargar los datos del archivo JSON
-        setUsers(usersData);
+        setUsers(usersData.filter(user => user.state === true)); // Filtrar los usuarios con state === true
     }, []);
 
     const handleOpenModal = () => {
@@ -74,7 +76,17 @@ function Gestion() {
                                         <td className="border border-gray-400 px-4 py-2">{user.email}</td>
                                         <td className="border border-gray-400 px-4 py-2">{user.phone}</td>
                                         <td className="border border-gray-400 px-4 py-2">{user.birthDate}</td>
-                                        <td className="border border-gray-400 px-4 py-2">Acciones</td>
+                                        <td className="border border-gray-400 px-4 py-2 flex gap-2">
+                                            <button className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">
+                                                <Eye size={16} />
+                                            </button>
+                                            <button className="bg-blue-200 hover:bg-blue-300 text-blue-800 font-bold py-2 px-4 rounded">
+                                                <Edit size={16} />
+                                            </button>
+                                            <button className="bg-red-200 hover:bg-red-300 text-red-800 font-bold py-2 px-4 rounded">
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
