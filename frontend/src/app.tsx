@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navigation from "./components/navigation";
 import Home from "./components/home";
@@ -6,7 +6,7 @@ import Role from "./components/role";
 import Document from "./components/document";
 import Gestion from "./components/gestionUsers";
 import Login from "./components/login";
-
+import { fetchData } from "./api/backend.api";
 interface Link {
     src: string;
     name: string;
@@ -21,6 +21,21 @@ function App() {
         setLinks(links);
     }, []);
 
+    // USE STATE TO SAVE THE DATA TABLES
+    const [users, setUsers] = useState([]);
+    const [roles, setRoles] = useState([]);
+    const [genders, setGenders] = useState([]);
+    const [documents, setDocuments] = useState([]);
+
+    //USE EFFECT TO GET THE DATA TABLES
+    useEffect(() => {
+        fetchData('/users', setUsers);
+        fetchData('/roles', setRoles);
+        fetchData('/genders', setGenders);
+        fetchData('/documents', setDocuments);
+    }, [isLoggedIn]);
+
+    console.log(users);
     return (
         <>
             {isLoggedIn ? (
