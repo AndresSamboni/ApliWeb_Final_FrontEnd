@@ -24,7 +24,8 @@ export default {
       'table-bg': '',
       'table-border': '',
       //Buttons
-      'subtmit': '#3c8f2e',
+      'submit': '#198754',
+      'info': '#1f2937',
       'modify': '#040174',
       'delete':'#800803',
     },
