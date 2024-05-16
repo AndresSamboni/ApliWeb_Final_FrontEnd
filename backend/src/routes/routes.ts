@@ -3,10 +3,11 @@ import { Router } from 'express';
 
 // IMPORT CONTROLLERS
 import { indexWelcome } from '../controllers/index.controller';
-import { getUsers, setUser, getUser } from '../controllers/user.controller';
-import { getRoles, setRole, getRole } from '../controllers/role.controller';
-import { getGenders, setGender, getGender } from '../controllers/gender.controller';
-import { getDocuments, setDocument, getDocument } from '../controllers/document.controller';
+import { getUsers, setUser, getUser, updateUser, disableUser, enableUser } from '../controllers/user.controller';
+import { getRoles, setRole, getRole, updateRole, disableRole, enableRole } from '../controllers/role.controller';
+import { getGenders, setGender, getGender, updateGender, disableGender, enableGender } from '../controllers/gender.controller';
+import { getDocuments, setDocument, getDocument, updateDocument, disableDocument } from '../controllers/document.controller';
+import { setRegister, updateRegister } from '../controllers/register.controller';
 
 // DEFINITION OF ROUTES
 const router = Router();
@@ -18,21 +19,36 @@ router.route('/').get(indexWelcome);
 router.route('/users').post(getUsers); // GET ALL USERS
 router.route('/user/create').post(setUser); // CREATE A NEW USER
 router.route('/user/:id').post(getUser); // GET A USER BY ID
+router.route('/user/update/:id').post(updateUser) // UPDATE A USER BY ID
+router.route('/user/disable/:id').post(disableUser); // DELETE A USER BY ID
+router.route('/user/enable/:id').post(enableUser); // RE-ACTIVATE A USER BY ID
 
 // ENDPOINTS TO ROLES TABLE
 router.route('/roles').post(getRoles); // GET ALL ROLES
 router.route('/role/create').post(setRole); // CREATE A NEW ROLE
 router.route('/role/:id').post(getRole); // GET A ROLE BY ID
+router.route('/role/update/.id').post(updateRole); // UPDATE A ROLE BY ID
+router.route('/role/disable/:id').post(disableRole); // DELETE A ROLE BY ID
+router.route('/role/enable/:id').post(enableRole); // RE-ACTIVATE A ROLE BY ID
 
 // ENDPOINTS TO GENDER TABLE
 router.route('/genders').post(getGenders); // GET ALL GENDERS
 router.route('/gender/create').post(setGender); // CREATE A NEW GENDER
 router.route('/gender/:id').post(getGender); // GET A GENDER by ID
+router.route('/gender/update/:id').post(updateGender); // UPDATE A GENDER BY ID
+router.route('/gender/disable/:id').post(disableGender); // DELETE A GENDER BY ID
+router.route('/gender/enable/:id').post(enableGender); // RE-ACTIVATE A GENDER BY ID
 
 // ENDPOINTS TO DOCUMENT TABLE
 router.route('/documents').post(getDocuments); // GET ALL DOCUMENTS
 router.route('/document/create').post(setDocument); // CREATE A NEW DOCUMENT
 router.route('/document/:id').post(getDocument); // GET A DOCUMENT BY ID
+router.route('/document/update/:id').post(updateDocument); // UPDATE A DOCUMENT BY ID
+router.route('/document/disable/:id').post(disableDocument); // DELETE A DOCUMENT BY ID
+
+// ENDPOINTS TO REGISTER TABLE
+router.route('/register/document').post(setRegister); // CREATE A NEW REGISTER
+router.route('/register/update/document').post(updateRegister); // UPDATE A REGISTER BY ID
 
 // EXPORT ROUTES
 export default router;

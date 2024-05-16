@@ -13,21 +13,23 @@ export async function getDocuments(req: Request, res: Response): Promise<Respons
         // CONNECTION TO THE DATABASE
         const CONNECTION = await connect();
     
-        //CREATION THE QUERY
+        // GET ALL THE DOCUMENTS
         const QUERY = `
             SELECT *
-            FROM tbl_document;
+            FROM tbl_document
+            WHERE state = 1;
         `;
-    
-        // EXECUTE THE QUERY
-        const [result] = await CONNECTION.query(QUERY);
+        const [RESULT] = await CONNECTION.query(QUERY);
     
         // RESPONSE OF THE FUNCTION
-        return res.json(result);
+        return res.status(200).json(RESULT);
     } catch (error) {
         // HANDLE THE ERROR
-        const err = error as Error;
-        return res.status(500).json({ message: 'An error occurred while getting the document', error: err.message });
+        const ERR = error as Error;
+        return res.status(500).json({
+            message: 'An error occurred while getting the documents',
+            error: ERR.message
+        });
     }
 }
 
@@ -35,27 +37,47 @@ export async function getDocuments(req: Request, res: Response): Promise<Respons
 export async function setDocument(req: Request, res: Response): Promise<Response> {
     try {
         // IDENTIFY THE DATA TO CREATE A NEW DOCUMENT
-        const newDocument: Document = req.body;
+        const NEW_DOCUMENT: Document = req.body;
 
         // CONNECTION TO THE DATABASE
         const CONNECTION = await connect();
 
-        // CREATION THE QUERY
+        // CHECK IF DOCUMENT ALREADY EXISTS
+        const CHECK_QUERY = `
+            SELECT *
+            FROM tbl_document
+            WHERE name = ?
+        `;
+        const [RESULT] = await CONNECTION.query(CHECK_QUERY, NEW_DOCUMENT.name);
+        const EXISTING_DOCUMENT: Array<Document> = RESULT as Array<Document>;
+        if (EXISTING_DOCUMENT.length > 0 && EXISTING_DOCUMENT[0].state) {
+            return res.status(200).json({
+                message: "Document already exists and it is active"
+            });
+        } else if (EXISTING_DOCUMENT.length > 0 && !EXISTING_DOCUMENT[0].state) {
+            return res.status(200).json({
+                message: "Document already exists and it is inactive",
+                id_document: EXISTING_DOCUMENT[0].id
+            });
+        }
+
+        // CREATE NEW DOCUMENT
         const QUERY = `
             INSERT INTO tbl_document SET ?;
         `;
-
-        // EXECUTE THE QUERY
-        await CONNECTION.query(QUERY, [newDocument]);
+        await CONNECTION.query(QUERY, [NEW_DOCUMENT]);
 
         //RESPONSE OF THE FUNCTION
-        return res.json({
+        return res.status(200).json({
             message: 'Document created successfully'
         });
     } catch (error) {
         // HANDLE THE ERROR
-        const err = error as Error;
-        return res.status(500).json({ message: 'An error occurred while getting the document', error: err.message });
+        const ERR = error as Error;
+        return res.status(500).json({
+            message: 'An error occurred while getting the document',
+            error: ERR.message
+        });
     }
 }
 
@@ -63,7 +85,7 @@ export async function setDocument(req: Request, res: Response): Promise<Response
 export async function getDocument(req: Request, res: Response): Promise<Response> {
     try {
         // IDENTIFY THE ID OF THE DOCUMENT
-        const { id } = req.params;
+        const { ID } = req.params;
 
         // CONNECTION TO THE DATABASE
         const CONNECTION = await connect();
@@ -76,13 +98,109 @@ export async function getDocument(req: Request, res: Response): Promise<Response
         `;
 
         // EXECUTE THE QUERY
-        const [result] = await CONNECTION.query(QUERY, [id]);
+        const [RESULT] = await CONNECTION.query(QUERY, [ID]);
 
         // RESPONSE OF THE FUNCTION
-        return res.json(result);
+        return res.status(200).json(RESULT);
     } catch (error) {
         // HANDLE THE ERROR
-        const err = error as Error;
-        return res.status(500).json({ message: 'An error occurred while getting the document', error: err.message });
+        const ERR = error as Error;
+        return res.status(500).json({
+            message: 'An error occurred while getting the document',
+            error: ERR.message
+        });
+    }
+}
+// DEFINITION OF THE updateDocument CONTROLLER TO UPDATE A DOCUMENT BY ID
+export async function updateDocument(req: Request, res: Response):Promise<Response> {
+    try {
+        // IDENTIFY THE DATA TO UPDATE A DOCUMENT BY ID
+        const { ID } = req.params;
+        const UPDATE_DOCUMENT = req.body;
+
+        // CONNECTION TO THE DATABASE
+        const CONNECTION = await connect();
+
+        // UPDATE DOCUMENT
+        const QUERY = `
+            UPDATE tbl_document
+            SET ?
+            WHERE id = ?;
+        `;
+        await CONNECTION.query(QUERY, [UPDATE_DOCUMENT, ID]);
+
+        //RESPONSE OF THE FUNCTION
+        return res.status(200).json({
+            message: "Document updated successfully"
+        });
+    } catch (error) {
+        // HANDLE THE ERROR
+        const ERR = error as Error;
+        return res.status(500).json({
+            message: 'An error occurred while updating the document',
+            error: ERR.message
+        });
+    }
+}
+
+// DEFINITION TO THE disableDocument CONTROLLER TO DISABLE DOCUMENT BY ID
+export async function disableDocument(req: Request, res: Response):Promise<Response> {
+    try {
+        // IDENTIFY THE DOCUMENT ID TO DISABLE
+        const { ID } = req.params;
+
+        // CONNECTION TO THE DATABASE
+        const CONNECTION = await connect();
+
+        // DISABLE DOCUMENT
+        const QUERY = `
+            UPDATE tbl_document
+            SET state = 0
+            WHERE id = ?;
+        `;
+        await CONNECTION.query(QUERY, [ID]);
+
+        //RESPONSE OF THE FUNCTION
+        return res.status(200).json({
+            message: "Document disable successfully"
+        });
+    } catch (error) {
+        // HANDLE THE ERROR
+        const ERR = error as Error;
+        return res.status(500).json({
+            message: 'An error occurred while disabling the document',
+            error: ERR.message
+        });
+    }
+}
+
+// DEFINITION TO THE enableDocument CONTROLLER TO ENABLE DOCUMENT BY ID
+export async function enableDocument(req: Request, res: Response):Promise<Response> {
+    try {
+        // IDENTIFY THE DOCUMENT ID TO ENABLE
+        const { ID } = req.params;
+
+        // CONNECTION TO THE DATABASE
+        const CONNECTION = await connect();
+
+        // ENABLE DOCUMENT
+        const QUERY = `
+            UPDATE tbl_document
+            SET state = 1
+            WHERE id = ?;
+        `;
+        await CONNECTION.query(QUERY, [ID]);
+
+        //RESPONSE OF THE FUNCTION
+        return res.status(200).json({
+            message: "Document enable successfully"
+        });
+    } catch (error) {
+        // HANDLE THE ERROR
+        const ERR = error as Error;
+        return res.status(500).json({
+            message: 'An error occurred while enabling the document',
+            error: ERR.message
+        });
     }
 }
