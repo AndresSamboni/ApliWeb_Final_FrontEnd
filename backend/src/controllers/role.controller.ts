@@ -5,14 +5,14 @@ import { Request, Response } from "express";
 import { connect } from "../connection/dbConnection";
 
 // DEFINITION OF THE USER CONTROLLER TO OBTAINT THE LIST OF USERS
-export async function getUsers(req: Request, res: Response): Promise<Response> {
+export async function getRoles(req: Request, res: Response): Promise<Response> {
     // CONNECTION TO THE DATABASE
     const CONNECTION = await connect();
 
     //CREATION THE QUERY
     const QUERY = `
         SELECT *
-        FROM tbl_user;
+        FROM tbl_role;
     `;
 
     // EXECUTE THE QUERY

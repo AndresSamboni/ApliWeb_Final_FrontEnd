@@ -12,8 +12,9 @@ const app = express();
 // ENABLE CORS
 app.use(cors());
 
-// ENABLE MIDLEWARES TO DEV
+// ENABLE MIDDLEWARE MORGAN TO KNOW THE STATE OF THE BACKEND SERVER AND EXPRESS.JSON TO OBTAIN THE BODY OF THE REQUEST
 app.use(morgan('dev'));
+app.use(express.json());
 
 // USE ROUTES
 app.use(router);
