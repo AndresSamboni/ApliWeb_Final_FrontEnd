@@ -44,8 +44,8 @@ CREATE TABLE IF NOT EXISTS tbl_user(
     FOREIGN KEY (gender_id_fk) REFERENCES tbl_gender(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
--- CREATION OF THE TABLE tbl_registro
-CREATE TABLE IF NOT EXISTS tbl_registro(
+-- CREATION OF THE TABLE tbl_register
+CREATE TABLE IF NOT EXISTS tbl_register(
     start_date DATETIME NOT NULL,
     modify_date DATETIME,
     delete_date DATETIME,
@@ -91,8 +91,8 @@ INSERT INTO tbl_user(
 ) VALUES
 ('ADMIN', 1234567890, 'admin@gmail.com', 'admin', '', 2, 1, 6);
 
--- DATA INSERT INTO tbl_registro
-INSERT INTO tbl_registro(
+-- DATA INSERT INTO tbl_register
+INSERT INTO tbl_register(
     start_date,
     user_id_fk,
     document_id_fk
