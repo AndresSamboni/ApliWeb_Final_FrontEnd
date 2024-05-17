@@ -84,9 +84,9 @@ function EditRole({ open, close, id, onEdit }: { open: boolean, close: () => voi
             error={error}
             setError={setError}
             content={{
-                title: "Modificar Rol",
+                title: "Modificar Datos del Rol",
                 field: "Nombre del Rol",
-                buttonYes: "Modificar Rol",
+                buttonYes: "Actualizar datos del Rol",
                 buttonNo: "Cancelar"
             }}
         />
