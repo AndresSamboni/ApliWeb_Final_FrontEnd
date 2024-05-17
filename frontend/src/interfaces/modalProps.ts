@@ -2,4 +2,5 @@
 export interface ModalProps {
     isOpen: boolean;
     closeModal: () => void;
+    onRoleCreated: () => void;
 }

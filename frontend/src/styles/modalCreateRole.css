@@ -1,0 +1,5 @@
+input:focus + label, input:not(:placeholder-shown) + label {
+    transform: translateY(-200%);
+    font-size: 1rem;
+    color: #542638;
+}

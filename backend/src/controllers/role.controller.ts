@@ -38,6 +38,7 @@ export async function setRole(req: Request, res: Response): Promise<Response> {
     try {
         // IDENTIFY THE DATA TO CREATE A NEW ROLE
         const NEW_ROLE: Role = req.body;
+        console.log(req.body);
         
         // CONNECTION TO THE DATABASE
         const CONNECTION = await connect();

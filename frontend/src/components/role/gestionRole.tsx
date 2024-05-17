@@ -28,10 +28,15 @@ function GestionRole() {
         setIsModalOpen(false);
     };
 
+    // FUNCTION TO FETCH ROLES
+    const fetchRoles = async () => {
+        await fetchData("/roles", setRoles);
+    };
+
     // USE EFFECT TO GET THE DATA TABLE
     useEffect(() => {
-        fetchData("/roles", setRoles);
-    }, [setRoles]);
+        fetchRoles();
+    }, []);
 
     // PRESENTATION OF THE ROLE TABLE
     return (
@@ -47,7 +52,7 @@ function GestionRole() {
                 </button>
             </section>
             <article className="relative overflow-x-auto rounded-lg w-full">
-                <table className="w-full text center text-content">
+                <table className="w-full text center">
                     <thead className="text-xl text-title ">
                         <tr className="text-center">
                             <th className="p-2">Identificador de Rol</th>
@@ -76,7 +81,7 @@ function GestionRole() {
                     </tbody>
                 </table>
             </article>
-            <ModalCreateRol isOpen={isModalOpen} closeModal={closeModal} />
+            <ModalCreateRol isOpen={isModalOpen} closeModal={closeModal} onRoleCreated={fetchRoles} />
         </section>
     );
 }
