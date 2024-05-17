@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import Table from "../table/table"
 import CreateRol from "./createRol";
+import EditRole from "./editRole";
+import ViewRole from "./viewRole";
 import DeleteRole from "./deleteRole";
 
 // IMPORT THE FETCH DATA FUNCTION
@@ -9,7 +11,6 @@ import { fetchData } from "../../api/backend.api";
 
 // IMPORT THE ROLE INTERFACE
 import { RoleInterface } from "../../interfaces/role.interface";
-import ViewRole from "./viewRole";
 
 
 //CREATION OF THE ROLE COMPONENT
@@ -24,8 +25,9 @@ function GestionRole() {
     // STATE TO CONTROL THE ROLE PRESENTATION
     const [roles, setRoles] = useState([] as RoleInterface[]);
     const [isCreateOpen, setIsCreateOpen] = useState(false);
-    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [isViewOpen, setIsViewOpen] = useState(false);
+    const [isEditOpen, setIsEditOpen] = useState(false);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [id, setId] = useState(0);
 
     // DEFINITION OF THE OPEN AND CLOSE FUNCTIONS
@@ -35,20 +37,24 @@ function GestionRole() {
     const closeCreate = () => {
         setIsCreateOpen(false);
     }
-    const openDelete = () => {
-        setIsDeleteOpen(true);
-    }
-    const closeDelete = () => {
-        setIsDeleteOpen(false);
-    }
     const openView = () => {
         setIsViewOpen(true);
     }
     const closeView = () => {
         setIsViewOpen(false);
     }
-
-
+    const openEdit = () => {
+        setIsEditOpen(true);
+    }
+    const closeEdit = () => {
+        setIsEditOpen(false);
+    }
+    const openDelete = () => {
+        setIsDeleteOpen(true);
+    }
+    const closeDelete = () => {
+        setIsDeleteOpen(false);
+    }
 
     // FUNCTION TO FETCH ROLES
     const fetchRoles = async () => {
@@ -80,12 +86,14 @@ function GestionRole() {
                             dataTable={roles}
                             setId={setId}
                             onView={openView}
+                            onModify={openEdit}
                             onDelete={openDelete} />
                     </article>
                 </section>
             </section>
             <CreateRol open={isCreateOpen} close={closeCreate} onCreated={fetchRoles} />
             <ViewRole open={isViewOpen} close={closeView} id={id} />
+            <EditRole open={isEditOpen} close={closeEdit} id={id} onEdit={fetchRoles} />
             <DeleteRole open={isDeleteOpen} close={closeDelete} id={id} onDelete={fetchRoles} />
         </>
     );

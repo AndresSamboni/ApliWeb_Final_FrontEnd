@@ -27,7 +27,7 @@ router.route('/user/enable/:ID').post(enableUser); // RE-ACTIVATE A USER BY ID
 router.route('/roles').post(getRoles); // GET ALL ROLES
 router.route('/role/create').post(setRole); // CREATE A NEW ROLE
 router.route('/role/:ID').post(getRole); // GET A ROLE BY ID
-router.route('/role/update/.ID').post(updateRole); // UPDATE A ROLE BY ID
+router.route('/role/update/:ID').post(updateRole); // UPDATE A ROLE BY ID
 router.route('/role/disable/:ID').post(disableRole); // DELETE A ROLE BY ID
 router.route('/role/enable/:ID').post(enableRole); // RE-ACTIVATE A ROLE BY ID
 

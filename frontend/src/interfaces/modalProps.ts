@@ -17,6 +17,32 @@ export interface ModalCreateProps {
     };
 }
 
+// DEFINITION THE PROPERTIES TYPES OF THE MODAL VIEW COMPONENT
+export interface ModalViewProps {
+    isOpen: boolean;
+    closeModal: () => void;
+    data: RoleInterface[];
+    content: {
+        title: string
+    }
+}
+
+// DEFINITION THE PROPERTIES TYPES OF THE MODAL EDIT COMPONENT
+export interface ModalEditProps {
+    isOpen: boolean;
+    closeModal: () => void;
+    submit: (name: string) => void;
+    initialName: string;
+    error: string;
+    setError: (error: string) => void;
+    content: {
+        title: string;
+        field: string;
+        buttonYes: string;
+        buttonNo: string;
+    };
+}
+
 // DEFINITION THE PROPERTIES TYPES OF THE MODAL DELETE COMPONENT
 export interface ModalDeleteProps {
     isOpen: boolean;
@@ -28,14 +54,4 @@ export interface ModalDeleteProps {
         buttonYes: string;
         buttonNo: string;
     };
-}
-
-// DEFINITION THE PROPERTIES TYPES OF THE MODAL VIEW COMPONENT
-export interface ModalViewProps {
-    isOpen: boolean;
-    closeModal: () => void;
-    data: RoleInterface[];
-    content: {
-        title: string
-    }
 }

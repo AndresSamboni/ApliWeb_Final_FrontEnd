@@ -2,7 +2,7 @@
 import { Trash2, Edit, Eye } from "react-feather";
 
 // CREATION THE TABLE COMPONENT
-function Table({ headerOptions, dataTable, setId, onView, onDelete }) {
+function Table({ headerOptions, dataTable, setId, onView, onModify, onDelete }) {
     // RETURN THE TABLE
     return (
         <table className="w-full">
@@ -27,7 +27,12 @@ function Table({ headerOptions, dataTable, setId, onView, onDelete }) {
                                 className="bg-gray-300 hover:bg-gray-400 text-info font-bold py-2 px-4 mx-1 rounded-full">
                                 <Eye size={20} />
                             </button>
-                            <button className="bg-blue-300 hover:bg-blue-400 text-modify font-bold py-2 px-4 mx-1 rounded-full">
+                            <button
+                                onClick={() => {
+                                    setId(data.id);
+                                    onModify();
+                                }}
+                                className="bg-blue-300 hover:bg-blue-400 text-modify font-bold py-2 px-4 mx-1 rounded-full">
                                 <Edit size={20} />
                             </button>
                             <button

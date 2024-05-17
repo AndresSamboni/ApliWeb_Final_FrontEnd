@@ -22,11 +22,6 @@ function CreateRol({ open, close, onCreated }: { open: boolean, close: () => voi
     const [error, setError] = useState('');
     const [response, setResponse] = useState({ message: '', error: '' });
 
-    // FUNCTION TO MODAL CLOSE
-    const closeModal = () => {
-        close();
-    }
-
     // FUNCTION TO SUBMIT INFORMATION
     const submitInfo = async () => {
         try {
@@ -52,7 +47,7 @@ function CreateRol({ open, close, onCreated }: { open: boolean, close: () => voi
             setError('El rol ya existe pero se encuentra inactivo');
         } else if (response.message === responseType[3]) {
             onCreated();
-            closeModal();
+            close();
         } else {
             setError(response.message);
         }
@@ -65,7 +60,7 @@ function CreateRol({ open, close, onCreated }: { open: boolean, close: () => voi
     return (
         <ModalCreate
             isOpen={open}
-            closeModal={closeModal}
+            closeModal={close}
             submit={submitInfo}
             name={name}
             setName={setName}

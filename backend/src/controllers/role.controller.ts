@@ -118,6 +118,25 @@ export async function updateRole(req: Request, res: Response) {
         
         // CONNECTION TO THE DATABASE
         const CONNECTION = await connect();
+
+        // CHECK IF ROLE ALREADY EXISTS
+        const CHECK_QUERY = `
+            SELECT *
+            FROM tbl_role
+            WHERE name = ?;
+        `;
+        const [RESULT] = await CONNECTION.query(CHECK_QUERY, UPDATE_ROLE.name);
+        const EXISTING_ROLE: Array<Role> = RESULT as Array<Role>;
+        if (EXISTING_ROLE.length > 0 && EXISTING_ROLE[0].state) {
+            return res.status(200).json({
+                message: "Role already exists and it is active"
+            });
+        } else if (EXISTING_ROLE.length > 0 && !EXISTING_ROLE[0].state) {
+            return res.status(200).json({
+                message: "Role already exists and it is inactive",
+                id_role: EXISTING_ROLE[0].id
+            });
+        }
     
         // UPDATE DE ROLE
         const QUERY = `
