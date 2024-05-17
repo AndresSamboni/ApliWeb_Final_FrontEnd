@@ -38,7 +38,6 @@ export async function setRole(req: Request, res: Response): Promise<Response> {
     try {
         // IDENTIFY THE DATA TO CREATE A NEW ROLE
         const NEW_ROLE: Role = req.body;
-        console.log(req.body);
         
         // CONNECTION TO THE DATABASE
         const CONNECTION = await connect();
@@ -98,9 +97,8 @@ export async function getRole(req: Request, res: Response): Promise<Response> {
             WHERE id = ?;
         `;
         const [RESULT] = await CONNECTION.query(QUERY, [ID]);
-    
         // RESPONSE OF THE FUNCTION
-        return res.status(200).json(RESULT);
+        return res.json(RESULT);
     } catch (error) {
         // HANDLE THE ERROR
         const ERR = error as Error;
@@ -148,6 +146,7 @@ export async function disableRole(req: Request, res: Response): Promise<Response
     try {
         // IDENTIFY THE ROLE ID TO DISABLE
         const { ID } = req.params;
+        console.log(ID);
 
         // CONNECTION TO DATABASE
         const CONNECTION = await connect();

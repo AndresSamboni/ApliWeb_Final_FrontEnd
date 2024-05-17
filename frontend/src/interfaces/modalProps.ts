@@ -1,6 +1,41 @@
-// DEFINITION THE PROPIERTIES TYPES OF THE MODAL COMPONENT
-export interface ModalProps {
+import { RoleInterface } from "./role.interface";
+
+// DEFINITION THE PROPERTIES TYPES OF THE MODAL CREATE COMPONENT
+export interface ModalCreateProps {
     isOpen: boolean;
     closeModal: () => void;
-    onRoleCreated: () => void;
+    submit: () => void;
+    name: string;
+    setName: (name: string) => void;
+    error: string;
+    setError: (error: string) => void;
+    content: {
+        title: string;
+        field: string;
+        buttonYes: string;
+        buttonNo: string;
+    };
+}
+
+// DEFINITION THE PROPERTIES TYPES OF THE MODAL DELETE COMPONENT
+export interface ModalDeleteProps {
+    isOpen: boolean;
+    closeModal: () => void;
+    submit: () => void;
+    error: string;
+    content: {
+        title: string;
+        buttonYes: string;
+        buttonNo: string;
+    };
+}
+
+// DEFINITION THE PROPERTIES TYPES OF THE MODAL VIEW COMPONENT
+export interface ModalViewProps {
+    isOpen: boolean;
+    closeModal: () => void;
+    data: RoleInterface[];
+    content: {
+        title: string
+    }
 }

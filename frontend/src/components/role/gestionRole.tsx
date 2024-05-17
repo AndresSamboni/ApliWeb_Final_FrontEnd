@@ -1,38 +1,59 @@
-// IMPORT REACT LIBRARIES
-import { Trash2, Edit, Eye } from "react-feather";
+// IMPORT REACT LIBRARIES AND COMPONENTS
 import { useEffect, useState } from "react";
-
-// IMPORT REACT COMPONENTS
-import ModalCreateRol from "./modalCreateRole";
+import Table from "../table/table"
+import CreateRol from "./createRol";
+import DeleteRole from "./deleteRole";
 
 // IMPORT THE FETCH DATA FUNCTION
 import { fetchData } from "../../api/backend.api";
 
 // IMPORT THE ROLE INTERFACE
 import { RoleInterface } from "../../interfaces/role.interface";
+import ViewRole from "./viewRole";
 
 
-//CREATE THE ROLE COMPONENT
+//CREATION OF THE ROLE COMPONENT
 function GestionRole() {
-    // STATE TO CONTROL IF THE MODAL IS OPEN OR NOT
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    // DEFINITION OF THE HEADER OPTION TABLE
+    const options = [
+        "Identificador de Rol",
+        "Nombre del Rol",
+        "Acciones"
+    ];
 
-    // STATE TO CONTROL THE ROLE DATA TABLE
+    // STATE TO CONTROL THE ROLE PRESENTATION
     const [roles, setRoles] = useState([] as RoleInterface[]);
+    const [isCreateOpen, setIsCreateOpen] = useState(false);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [isViewOpen, setIsViewOpen] = useState(false);
+    const [id, setId] = useState(0);
 
     // DEFINITION OF THE OPEN AND CLOSE FUNCTIONS
-    const openModal = () => {
-        setIsModalOpen(true);
-    };
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
+    const openCreate = () => {
+        setIsCreateOpen(true);
+    }
+    const closeCreate = () => {
+        setIsCreateOpen(false);
+    }
+    const openDelete = () => {
+        setIsDeleteOpen(true);
+    }
+    const closeDelete = () => {
+        setIsDeleteOpen(false);
+    }
+    const openView = () => {
+        setIsViewOpen(true);
+    }
+    const closeView = () => {
+        setIsViewOpen(false);
+    }
+
+
 
     // FUNCTION TO FETCH ROLES
     const fetchRoles = async () => {
         await fetchData("/roles", setRoles);
     };
-
     // USE EFFECT TO GET THE DATA TABLE
     useEffect(() => {
         fetchRoles();
@@ -40,51 +61,35 @@ function GestionRole() {
 
     // PRESENTATION OF THE ROLE TABLE
     return (
-        <section className="flex flex-col p-2 my-4 space-y-2 w-full">
-            <article className="flex flex-col text-center">
-                <h1 className="text-2xl text-title">
+        <>
+            <section className="p-2 my-4 space-y-2 w-full">
+                <h1 className="text-2xl font-semibold text-center text-title">
                     <strong>Gestión de Roles</strong>
                 </h1>
-            </article>
-            <section className="flex justify-end">
-                <button type="button" className="m-0 p-2 rounded-lg bg-submit text-white" onClick={openModal}>
-                    Crear Rol
-                </button>
+                <div className="flex justify-center">
+                    <section className="flex justify-end w-3/4">
+                        <button onClick={openCreate} className="m-o p-2 rounded-lg bg-submit hover:bg-green-700 text-white">
+                            Crear Rol
+                        </button>
+                    </section>
+                </div>
+                <section className="flex justify-center">
+                    <article className="relative overflow-x-auto rounded-lg w-3/4">
+                        <Table
+                            headerOptions={options}
+                            dataTable={roles}
+                            setId={setId}
+                            onView={openView}
+                            onDelete={openDelete} />
+                    </article>
+                </section>
             </section>
-            <article className="relative overflow-x-auto rounded-lg w-full">
-                <table className="w-full text center">
-                    <thead className="text-xl text-title ">
-                        <tr className="text-center">
-                            <th className="p-2">Identificador de Rol</th>
-                            <th className="p-2">Nombre del Rol</th>
-                            <th className="p-2">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {roles.map((role, index) => (
-                            <tr key={index} className="text-center">
-                                <td className="p-2">{role.id}</td>
-                                <td className="p-2">{role.name}</td>
-                                <td className="p-2">
-                                    <button className="bg-gray-300 hover:bg-gray-400 text-info font-bold py-2 px-4 rounded">
-                                        <Eye size={16} />
-                                    </button>
-                                    <button className="bg-blue-300 hover:bg-blue-400 text-modify font-bold py-2 px-4 rounded">
-                                        <Edit size={16} />
-                                    </button>
-                                    <button className="bg-red-300 hover:bg-red-400 text-delete font-bold py-2 px-4 rounded">
-                                        <Trash2 size={16} />
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </article>
-            <ModalCreateRol isOpen={isModalOpen} closeModal={closeModal} onRoleCreated={fetchRoles} />
-        </section>
+            <CreateRol open={isCreateOpen} close={closeCreate} onCreated={fetchRoles} />
+            <ViewRole open={isViewOpen} close={closeView} id={id} />
+            <DeleteRole open={isDeleteOpen} close={closeDelete} id={id} onDelete={fetchRoles} />
+        </>
     );
 }
 
-//EXPORT THE COMPONENT
+// EXPORT THE COMPONENT
 export default GestionRole;
