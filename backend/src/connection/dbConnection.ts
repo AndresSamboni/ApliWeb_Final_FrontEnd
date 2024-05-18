@@ -1,7 +1,5 @@
-// IMPORT CONNECTION LIBRARIES
 import { createPool } from 'mysql2/promise';
 
-// PARAMETERS TO DATABASE CONNECTION
 const DB_CONFIG = {
     HOST: 'localhost',
     USER: 'root',
@@ -10,9 +8,8 @@ const DB_CONFIG = {
     PORT: 3306
 };
 
-// CREATE DATABASE CONNECTION
 export async function connect() {
-    const CONNECTION = await createPool({
+    const connection = await createPool({
         host: DB_CONFIG.HOST,
         user: DB_CONFIG.USER,
         password: DB_CONFIG.PASSWORD,
@@ -20,5 +17,5 @@ export async function connect() {
         port: DB_CONFIG.PORT
     });
 
-    return CONNECTION;
+    return connection;
 }

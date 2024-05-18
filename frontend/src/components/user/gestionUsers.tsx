@@ -5,8 +5,21 @@ import VerUser from './verUser';
 import EditUser from './editUser';
 import DeleteUser from './deleteUser';
 import { fetchData } from "../../api/backend.api";
+import { useNavigate } from 'react-router-dom';
 
-function Gestion() {
+interface GestionProps {
+    userRole: string;
+}
+
+const Gestion: React.FC<GestionProps> = ({ userRole }) => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (userRole !== 'SUPER ADMINISTRADOR') {
+            navigate('/'); // Redirigir a la página de inicio si el usuario no tiene acceso
+        }
+    }, [userRole, navigate]);
+
     const [modalOpen, setModalOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
