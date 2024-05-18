@@ -1,5 +1,4 @@
 // IMPORT REACT LIBRARIES
-import { useState } from "react";
 import { Trash2, Edit, Eye } from "react-feather";
 
 // CREATION THE TABLE COMPONENT

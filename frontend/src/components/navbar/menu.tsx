@@ -38,6 +38,7 @@ function Menu({ userRole }: Readonly<Menu>) {
                 <section
                     className='
                                 absolute
+                                z-50
                                 top-full
                                 flex
                                 flex-col
@@ -57,6 +58,9 @@ function Menu({ userRole }: Readonly<Menu>) {
                         <Link
                             key={link.src}
                             to={link.src}
+                            onClick={() => {
+                                setToggle(false);
+                            }}
                             className='text-xl font-semibold text-title'
                         >{link.name}</Link>
                     ))}
