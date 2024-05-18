@@ -2,33 +2,36 @@ import { useState, useEffect } from 'react';
 import { Trash2, Edit, Eye } from 'react-feather';
 import { UserInterface } from '../../interfaces/userProps.interface';
 import VerUser from './verUser';
-
-// IMPORT THE FETCH DATA FUNCTION
+import EditUser from './editUser';
 import { fetchData } from "../../api/backend.api";
 
 function Gestion() {
     const [modalOpen, setModalOpen] = useState(false);
+    const [editModalOpen, setEditModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<UserInterface | null>(null);
     const [users, setUsers] = useState<UserInterface[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                setLoading(true);
-                console.log('Fetching users...');
-                await fetchData('/users', setUsers);
-                setLoading(false);
-            } catch (err) {
-                setError('Error al obtener usuarios');
-                console.error('Error fetching users:', err);
-                setLoading(false);
-            }
-        };
-
         fetchUsers();
     }, []);
+
+    const fetchUsers = async () => {
+        try {
+            setLoading(true);
+            console.log('Fetching users...');
+            await fetchData('/users', (data: UserInterface[]) => {
+                console.log('Response data:', data);
+                setUsers(data);
+            });
+            setLoading(false);
+        } catch (err) {
+            setError('Error al obtener usuarios');
+            console.error('Error fetching users:', err);
+            setLoading(false);
+        }
+    };
 
     const handleOpenModal = () => {
         setModalOpen(true);
@@ -36,6 +39,15 @@ function Gestion() {
 
     const handleCloseModal = () => {
         setModalOpen(false);
+    };
+
+    const handleOpenEditModal = (user: UserInterface) => {
+        setSelectedUser(user);
+        setEditModalOpen(true);
+    };
+
+    const handleCloseEditModal = () => {
+        setEditModalOpen(false);
     };
 
     const handleViewUser = (user: UserInterface) => {
@@ -50,6 +62,8 @@ function Gestion() {
     if (error) {
         return <div>{error}</div>;
     }
+
+    const activeUsers = users.filter(user => user.state === true);
 
     return (
         <div className="w-80 md:w-full mx-auto p-10 mt-15 mb-15">
@@ -71,6 +85,16 @@ function Gestion() {
                     </div>
                 </div>
             )}
+            {editModalOpen && selectedUser && selectedUser.id !== undefined && (
+                <EditUser
+                    open={editModalOpen}
+                    close={handleCloseEditModal}
+                    userId={selectedUser.id}
+                    onEdit={fetchUsers}
+                    onExists={() => console.log('User already exists')}
+                    setId={(id: number) => setSelectedUser(users.find(user => user.id === id) || null)}
+                />
+            )}
             <table className="w-full border-collapse border border-gray-400 mb-8">
                 <thead>
                     <tr>
@@ -86,7 +110,7 @@ function Gestion() {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map((user, index) => (
+                    {activeUsers.map((user, index) => (
                         <tr key={index}>
                             <td className="border border-gray-400 px-4 py-2">{user.id}</td>
                             <td className="border border-gray-400 px-4 py-2">{user.name}</td>
@@ -102,7 +126,7 @@ function Gestion() {
                                 <button className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded" onClick={() => handleViewUser(user)}>
                                     <Eye size={16} />
                                 </button>
-                                <button className="bg-blue-200 hover:bg-blue-300 text-blue-800 font-bold py-2 px-4 rounded">
+                                <button className="bg-blue-200 hover:bg-blue-300 text-blue-800 font-bold py-2 px-4 rounded" onClick={() => handleOpenEditModal(user)}>
                                     <Edit size={16} />
                                 </button>
                                 <button className="bg-red-200 hover:bg-red-300 text-red-800 font-bold py-2 px-4 rounded">

@@ -50,7 +50,7 @@ function VerUser(props: { userId: number }) {
                     <p><strong>Email:</strong> {user.email}</p>
                     <p><strong>Teléfono:</strong> {user.phone || "No especificado"}</p>
                     <p><strong>Fecha de Nacimiento:</strong> {user.birthdate ? new Date(user.birthdate).toLocaleDateString() : "No especificada"}</p>
-                    <p><strong>Estado:</strong> {user.state ? "Inactivo" : "Activo"}</p>
+                    <p><strong>Estado:</strong> {user.state ? "Activo" : "Inactivo"}</p>
                 </div>
             </div>
         </div>
