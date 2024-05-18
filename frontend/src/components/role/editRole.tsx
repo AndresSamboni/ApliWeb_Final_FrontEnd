@@ -1,6 +1,6 @@
 import { fetchData } from "../../api/backend.api";
 import { useEffect, useState } from "react";
-import { RoleInterface } from "../../interfaces/role.interface";
+import { RoleInterface } from "../../interfaces/roleProps.interface";
 import { RoleModel } from "../../model/role.model";
 import ModalEdit from "../modal/modalEdit";
 

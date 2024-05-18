@@ -8,12 +8,12 @@ export default {
   theme: {
     colors: {
       //General
-      'bg': '#ffdbd7',
+      'bg': '#EFF6FF',
       'title': '#3d0604',
       'content': '#542638',
-      'shadow':'#ce7095',
+      'shadow':'#AD7980',
       //Navigation
-      'nav-bg': '#fa7f77',
+      'nav-bg': '#C1B4D7',
       'nav-border':'#855e6e',
       'link-bg': '#b42529',
       'link-border': '#ffc219',

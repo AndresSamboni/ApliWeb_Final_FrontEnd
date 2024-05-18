@@ -1,4 +1,4 @@
-import { RoleInterface } from "./role.interface";
+import { RoleInterface } from "./roleProps.interface";
 
 // DEFINITION THE PROPERTIES TYPES OF THE MODAL CREATE COMPONENT
 export interface ModalCreateProps {

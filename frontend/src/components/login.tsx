@@ -87,14 +87,14 @@ const Login: React.FC<LoginProps> = ({ setIsLoggedIn }) => {
         );
     }
     return (
-        <div className="flex justify-center items-center h-screen bg-gray-200">
+        <div className="flex justify-center items-center h-screen">
             <div className='bg-white border border-gray-400 rounded-md p-8 shadow-lg'>
-                <h1 className='text-center text-black font-bold mb-4'>INICIO DE SESIÓN</h1>
+                <h1 className='text-center text-title font-bold mb-4'>INICIO DE SESIÓN</h1>
                 <form onSubmit={handleSubmit}>
                     {error && <div className="text-red-500 mb-4">{error}</div>}
                     <div className="mb-4 relative">
                         {usernameFocused || username ? (
-                            <label className="block text-black mb-2" htmlFor="username">Nombre de Usuario</label>
+                            <label className="block text-content mb-2" htmlFor="username">Nombre de Usuario</label>
                         ) : (
                             <label className="absolute top-1/2 left-2 transform -translate-y-1/2 text-gray-400 text-xs transition-all duration-300" htmlFor="username">
                                 NOMBRE DE USUARIO
@@ -114,7 +114,7 @@ const Login: React.FC<LoginProps> = ({ setIsLoggedIn }) => {
                     </div>
                     <div className="mb-4 relative">
                         {passwordFocused || password ? (
-                            <label className="block text-black mb-2" htmlFor="password">Contraseña</label>
+                            <label className="block text-content mb-2" htmlFor="password">Contraseña</label>
                         ) : (
                             <label className="absolute top-1/2 left-2 transform -translate-y-1/2 text-gray-400 text-xs transition-all duration-300" htmlFor="password">
                                 CONTRASEÑA
@@ -141,7 +141,7 @@ const Login: React.FC<LoginProps> = ({ setIsLoggedIn }) => {
                     <div className="text-right mb-4">
                         <a href="#" className="text-blue-500 text-sm">¿Olvidaste tu contraseña?</a>
                     </div>
-                    <button type="submit" className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-300">Crear Usuario</button>
+                    <button type="submit" className="w-full bg-submit text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-300">Iniciar Sesión</button>
                 </form>
             </div>
         </div>

@@ -11,7 +11,7 @@ import ExistsRole from "./existsRole";
 import { fetchData } from "../../api/backend.api";
 
 // IMPORT THE ROLE INTERFACE
-import { RoleInterface } from "../../interfaces/role.interface";
+import { RoleInterface } from "../../interfaces/roleProps.interface";
 
 
 //CREATION OF THE ROLE COMPONENT
