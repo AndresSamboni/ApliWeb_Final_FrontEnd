@@ -9,7 +9,8 @@ function User() {
         gender: "Masculino",
         email: "john.doe@example.com",
         phone: "+123456789",
-        birthDate: "01/01/1990"
+        birthDate: "01/01/1990",
+        state: true
     };
 
     return (
@@ -33,6 +34,7 @@ function User() {
                     <p><strong>Género:</strong> {userData.gender}</p>
                     <p><strong>Contacto:</strong> Correo: {userData.email}, Teléfono: {userData.phone}</p>
                     <p><strong>Fecha de Nacimiento:</strong> {userData.birthDate}</p>
+                    <p><strong>Estado:</strong> {userData.state ? 'Activo' : 'Inactivo'}</p>
                 </div>
             </div>
         </div>

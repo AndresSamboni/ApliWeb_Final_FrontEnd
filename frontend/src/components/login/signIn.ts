@@ -1,4 +1,4 @@
-import usersData from './usersEjemplo.json';
+import usersData from '../usersEjemplo.json';
 
 interface User {
   username: string;

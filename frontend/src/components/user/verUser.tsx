@@ -9,6 +9,7 @@ interface UserProps {
         email: string;
         phone: string;
         birthDate: string;
+        state: boolean;
     };
 }
 
@@ -32,6 +33,7 @@ function User(props: UserProps) {
                     <p><strong>Género:</strong> {user.gender}</p>
                     <p><strong>Contacto:</strong> Correo: {user.email}, Teléfono: {user.phone}</p>
                     <p><strong>Fecha de Nacimiento:</strong> {user.birthDate}</p>
+                    <p><strong>Estado:</strong> {user.state ? "Activo" : "Inactivo"}</p>
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@
 import GestionRole from "../role/gestionRole";
 import Document from "../document";
 import Gender from "../gender";
-import User from "../gestionUsers";
+import User from "../user/gestionUsers";
 
 // ICONS SIZE
 export const S_HOME = 30;
