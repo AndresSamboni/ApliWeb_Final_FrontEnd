@@ -1,11 +1,34 @@
-import { useState} from 'react';
-import usersData from '../usersEjemplo.json';
+import { useState, useEffect } from 'react';
 import { Trash2, Edit, Eye } from 'react-feather';
-import User from './verUser';
+import { UserInterface } from '../../interfaces/userProps.interface';
+import VerUser from './verUser';
+
+// IMPORT THE FETCH DATA FUNCTION
+import { fetchData } from "../../api/backend.api";
 
 function Gestion() {
     const [modalOpen, setModalOpen] = useState(false);
-    const [selectedUser, setSelectedUser] = useState<any | null>(null);
+    const [selectedUser, setSelectedUser] = useState<UserInterface | null>(null);
+    const [users, setUsers] = useState<UserInterface[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                setLoading(true);
+                console.log('Fetching users...');
+                await fetchData('/users', setUsers);
+                setLoading(false);
+            } catch (err) {
+                setError('Error al obtener usuarios');
+                console.error('Error fetching users:', err);
+                setLoading(false);
+            }
+        };
+
+        fetchUsers();
+    }, []);
 
     const handleOpenModal = () => {
         setModalOpen(true);
@@ -15,10 +38,18 @@ function Gestion() {
         setModalOpen(false);
     };
 
-    const handleViewUser = (user: any) => {
+    const handleViewUser = (user: UserInterface) => {
         setSelectedUser(user);
-        setModalOpen(true); // Abrir el modal al hacer clic en el botón del ojo
+        setModalOpen(true);
     };
+
+    if (loading) {
+        return <div>Cargando...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
 
     return (
         <div className="w-80 md:w-full mx-auto p-10 mt-15 mb-15">
@@ -31,11 +62,11 @@ function Gestion() {
                     Crear usuario
                 </button>
             </div>
-            {modalOpen && (
+            {modalOpen && selectedUser && selectedUser.id !== undefined && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="bg-white p-6 rounded shadow-md">
                         <h2 className="text-lg font-bold mb-4">Usuario Seleccionado</h2>
-                        {selectedUser && <User user={selectedUser} />} {/* Mostrar el componente User solo si hay un usuario seleccionado */}
+                        <VerUser userId={selectedUser.id} />
                         <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" onClick={handleCloseModal}>Cerrar</button>
                     </div>
                 </div>
@@ -55,33 +86,32 @@ function Gestion() {
                     </tr>
                 </thead>
                 <tbody>
-                    {usersData
-                        .filter(user => user.state === true) // Filtrar solo los usuarios con state === true
-                        .map((user, index) => (
-                            <tr key={index}>
-                                <td className="border border-gray-400 px-4 py-2">{index + 1}</td>
-                                <td className="border border-gray-400 px-4 py-2">{user.name}</td>
-                                <td className="border border-gray-400 px-4 py-2">{user.last_name}</td>
-                                <td className="border border-gray-400 px-4 py-2">{user.document_type}</td>
-                                <td className="border border-gray-400 px-4 py-2">{user.document_number}</td>
-                                <td className="border border-gray-400 px-4 py-2">{user.email}</td>
-                                <td className="border border-gray-400 px-4 py-2">{user.phone}</td>
-                                <td className="border border-gray-400 px-4 py-2">{user.birthDate}</td>
-                                <td className="border border-gray-400 px-4 py-2 flex gap-2">
-                                    <button className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded" onClick={() => handleViewUser(user)}>
-                                        <Eye size={16} />
-                                    </button>
-                                    <button className="bg-blue-200 hover:bg-blue-300 text-blue-800 font-bold py-2 px-4 rounded">
-                                        <Edit size={16} />
-                                    </button>
-                                    <button className="bg-red-200 hover:bg-red-300 text-red-800 font-bold py-2 px-4 rounded">
-                                        <Trash2 size={16} />
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
+                    {users.map((user, index) => (
+                        <tr key={index}>
+                            <td className="border border-gray-400 px-4 py-2">{user.id}</td>
+                            <td className="border border-gray-400 px-4 py-2">{user.name}</td>
+                            <td className="border border-gray-400 px-4 py-2">{user.last_name}</td>
+                            <td className="border border-gray-400 px-4 py-2">{user.document_id_fk}</td>
+                            <td className="border border-gray-400 px-4 py-2">{user.document_number}</td>
+                            <td className="border border-gray-400 px-4 py-2">{user.email}</td>
+                            <td className="border border-gray-400 px-4 py-2">{user.phone}</td>
+                            <td className="border border-gray-400 px-4 py-2">
+                                {user.birthdate ? new Date(user.birthdate).toLocaleDateString() : "No especificada"}
+                            </td>
+                            <td className="border border-gray-400 px-4 py-2 flex gap-2">
+                                <button className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded" onClick={() => handleViewUser(user)}>
+                                    <Eye size={16} />
+                                </button>
+                                <button className="bg-blue-200 hover:bg-blue-300 text-blue-800 font-bold py-2 px-4 rounded">
+                                    <Edit size={16} />
+                                </button>
+                                <button className="bg-red-200 hover:bg-red-300 text-red-800 font-bold py-2 px-4 rounded">
+                                    <Trash2 size={16} />
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
-
             </table>
         </div>
     );
