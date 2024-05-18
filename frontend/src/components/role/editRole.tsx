@@ -1,97 +1,96 @@
-// IMPORT THE API CONNECTION
 import { fetchData } from "../../api/backend.api";
-
-// IMPORT REACT LIBRARIES AND COMPONENTS
 import { useEffect, useState } from "react";
-import ModalEdit from "../modal/modalEdit";
-
-// IMPORT THE INTERFACE AND MODEL
 import { RoleInterface } from "../../interfaces/role.interface";
 import { RoleModel } from "../../model/role.model";
+import ModalEdit from "../modal/modalEdit";
 
-// CREATE EditRole COMPONENT
-function EditRole({ open, close, id, onEdit }: { open: boolean, close: () => void, id: number, onEdit: () => void }) {
+function EditRole({ open, close, id, onEdit, onExists, setId }: { open: boolean, close: () => void, id: number, onEdit: () => void, onExists: () => void, setId: (id: number) => void }) {
     // RESPONSE TYPE
     const responseType = {
-        1: "Role already exists and it is active",
-        2: "Role already exists and it is inactive",
+        1: 'Role already exists and it is active',
+        2: 'Role already exists and it is inactive',
         3: 'Role updated successfully'
     };
 
     // SAVE THE INFORMATION
     const [role, setRole] = useState([] as RoleInterface[]);
+    const [name, setName] = useState('');
     const [error, setError] = useState('');
-    const [formData, setFormData] = useState({ "name": '' });
-    const [response, setResponse] = useState({ message: '', error: '' });
+    const [response, setResponse] = useState({ message: '', error: '', id_role: 0 });
 
-    // FUNCTION TO SUBMIT INFORMATION
-    const submitInfo = async (name: string) => {
+    // GET THE RESPONSE TO THE UPDATE
+    const submit = async (e: React.FormEvent) => {
+        e.preventDefault();
         try {
-            // VALIDATE THE INFORMATION
             await RoleModel.validate({ name });
-
-            // CREATE THE JSON DATA
-            setFormData({ "name": name });
-
-            //TRY UPDATE THE ROLE
-            await fetchData(`/role/update/${id}`, setResponse, formData);
-        } catch (error) {
-            const ERR = error as Error;
+            const data = { "name": name };
+            await fetchData(`/role/update/${id}`, setResponse, data);
+        } catch (e) {
+            const ERR = e as Error;
             setError(ERR.message);
         }
-    }
+    };
 
-    // USE EFEECT TO OBTAIN THE RESPONSE
+    // GET THE ROLE INFORMATION TO EDIT
+    useEffect(() => {
+        fetchData(`/role/${id}`, setRole);
+    }, [setRole, id]);
+
+    // GET THE NAME ROLE
+    useEffect(() => {
+        setName(role[0]?.name || '');
+    }, [setName, role]);
+
+
+    // EVALUATE THE RESPONSE
     useEffect(() => {
         if (response.message === responseType[1]) {
-            setError('El rol ya existe y se encuentra activo');
+            setError(response.message);
         } else if (response.message === responseType[2]) {
-            setError('El rol ya existe pero se encuentra inactivo');
-        } else if (response.message === responseType[3]) {
-            onEdit();
+            // EXISTING ROLE
+            setId(response.id_role);
+            setError('');
             close();
-            setRole(prevRole => [{ ...prevRole[0], name: formData.name }]);
+            onExists();
+        } else if (response.message === responseType[3]) {
+            // CORRECT UPDATE
+            setError('');
+            setId(0);
+            close();
+            onEdit();
         } else {
             setError(response.message);
         }
     }, [response]);
 
-    // FUNCTION TO OBTAIN THE ROLE INFORMATION
-    useEffect(() => {
-        fetchData(`/role/${id}`, setRole);
-        setFormData({ name: role[0]?.name || '' });
-    }, [setRole, id]);
+    //CLOSE MODAL FUNCTION
+    const closeModal = async () => {
+        setId(0);
+        close();
+    };
 
-    // USE EFFECT TO RESET FORMDATA WHEN MODAL CLOSES
-    useEffect(() => {
-        if (!open) {
-            setFormData({ name: '' });
-        }
-    }, [open]);
-
-    // VALIDATE IF THE MODAL IS OPEN
+    // VALIDATE IF MODAL IS OPEN
     if (!open) {
         return null;
     }
-
-    // PRESENT THE COMPONENT
     return (
         <ModalEdit
             isOpen={open}
-            closeModal={close}
-            submit={submitInfo}
-            initialName={role[0]?.name || ''}
+            closeModal={closeModal}
+            submit={submit}
+            name={name}
+            setName={setName}
             error={error}
             setError={setError}
             content={{
-                title: "Modificar Datos del Rol",
-                field: "Nombre del Rol",
-                buttonYes: "Actualizar datos del Rol",
-                buttonNo: "Cancelar"
+                title: 'Modificar Datos del Rol',
+                field: 'Nombre del Rol',
+                buttonYes: 'Actualizar Datos del Rol',
+                buttonNo: 'Cancelar'
+
             }}
         />
     );
 }
 
-// EXPORT EditRole COMPONENT
 export default EditRole;

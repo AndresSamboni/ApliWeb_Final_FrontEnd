@@ -9,7 +9,7 @@ import ModalCreate from "../modal/modalCreate";
 import { RoleModel } from "../../model/role.model";
 
 // CREATE THE createRol COMPONENT
-function CreateRol({ open, close, onCreated }: { open: boolean, close: () => void, onCreated: () => void }) {
+function CreateRole({ open, close, onCreated, onExists, setId }: { open: boolean, close: () => void, onCreated: () => void, onExists: () => void, setId: (id: number) => void }) {
     // RESPONSE TYPE
     const responseType = {
         1: "Role already exists and it is active",
@@ -20,7 +20,7 @@ function CreateRol({ open, close, onCreated }: { open: boolean, close: () => voi
     // SAVE THE INFORMATION TO VALIDATE THE ROL CREATION
     const [name, setName] = useState('');
     const [error, setError] = useState('');
-    const [response, setResponse] = useState({ message: '', error: '' });
+    const [response, setResponse] = useState({ message: '', error: '', id_role: 0 });
 
     // FUNCTION TO SUBMIT INFORMATION
     const submitInfo = async () => {
@@ -44,14 +44,16 @@ function CreateRol({ open, close, onCreated }: { open: boolean, close: () => voi
         if (response.message === responseType[1]) {
             setError('El rol ya existe y se encuentra activo');
         } else if (response.message === responseType[2]) {
-            setError('El rol ya existe pero se encuentra inactivo');
+            setId(response.id_role);
+            onExists();
+            close();
         } else if (response.message === responseType[3]) {
             onCreated();
             close();
         } else {
             setError(response.message);
         }
-    }, [response]);
+    }, [response, setError]);
 
     // VALIDATE THE OPEN MODAL
     if (!open) {
@@ -77,4 +79,4 @@ function CreateRol({ open, close, onCreated }: { open: boolean, close: () => voi
 }
 
 //EXPORT THE COMPONENT
-export default CreateRol;
+export default CreateRole;

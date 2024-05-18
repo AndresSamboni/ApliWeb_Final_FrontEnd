@@ -197,6 +197,7 @@ export async function enableRole(req: Request, res: Response): Promise<Response>
     try {
         // IDENTIFY THE ROLE ID TO ENABLE
         const { ID } = req.params;
+        console.log(`Recibí esta ID: ${ID}`)
 
         // CONNECTION TO DATABASE
         const CONNECTION = await connect();

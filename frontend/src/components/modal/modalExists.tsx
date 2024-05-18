@@ -1,12 +1,12 @@
 // IMPORT REACT ICONS
-import { IoIosCloseCircleOutline } from "react-icons/io";
-import { MdDangerous } from "react-icons/md";
+import { IoIosCloseCircleOutline } from 'react-icons/io';
+import { IoWarning } from "react-icons/io5";
 
 // IMPORT MODAL PROPERTIES
-import { ModalDeleteProps } from "../../interfaces/modalProps.interface";
+import { ModalExistsProps } from '../../interfaces/modalProps.interface';
 
-// CREATE THE modalDelete COMPONENT
-function ModalDelete({ isOpen, closeModal, submit, error, content }: Readonly<ModalDeleteProps>) {
+// CREATE THE modalExists COMPONENT
+function ModalExists({ isOpen, closeModal, submit, error, content }: Readonly<ModalExistsProps>) {
     // VALIDATE THE SUBMIT FUNCTION
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -40,7 +40,7 @@ function ModalDelete({ isOpen, closeModal, submit, error, content }: Readonly<Mo
                     <form onSubmit={onSubmit}>
                         <main className="flex flex-col w-full space-y-2">
                             <section className="flex flex-col sm:flex-row items-center justify-center sm:justify-start px-4">
-                                <MdDangerous size={100} className="text-red-600 mb-4 sm:mb-0 sm:mr-4" />
+                                <IoWarning size={100} className="text-yellow-300 mb-4 sm:mb-0 sm:mr-4" />
                                 <h3 className="text-xl font-semibold text-center sm:text-left text-title" id="modal-title">{content.title}</h3>
                             </section>
                             <section className="relative">
@@ -67,4 +67,4 @@ function ModalDelete({ isOpen, closeModal, submit, error, content }: Readonly<Mo
 }
 
 // EXPORT THE COMPONENT
-export default ModalDelete;
+export default ModalExists;

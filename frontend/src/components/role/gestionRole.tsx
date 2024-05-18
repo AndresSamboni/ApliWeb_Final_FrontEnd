@@ -1,10 +1,11 @@
 // IMPORT REACT LIBRARIES AND COMPONENTS
 import { useEffect, useState } from "react";
 import Table from "../table/table"
-import CreateRol from "./createRol";
+import CreateRole from "./createRole";
 import EditRole from "./editRole";
 import ViewRole from "./viewRole";
 import DeleteRole from "./deleteRole";
+import ExistsRole from "./existsRole";
 
 // IMPORT THE FETCH DATA FUNCTION
 import { fetchData } from "../../api/backend.api";
@@ -28,33 +29,40 @@ function GestionRole() {
     const [isViewOpen, setIsViewOpen] = useState(false);
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [isExistsOpen, setIsExistsOpen] = useState(false);
     const [id, setId] = useState(0);
 
     // DEFINITION OF THE OPEN AND CLOSE FUNCTIONS
     const openCreate = () => {
         setIsCreateOpen(true);
-    }
+    };
     const closeCreate = () => {
         setIsCreateOpen(false);
-    }
+    };
     const openView = () => {
         setIsViewOpen(true);
-    }
+    };
     const closeView = () => {
         setIsViewOpen(false);
-    }
+    };
     const openEdit = () => {
         setIsEditOpen(true);
-    }
+    };
     const closeEdit = () => {
         setIsEditOpen(false);
-    }
+    };
     const openDelete = () => {
         setIsDeleteOpen(true);
-    }
+    };
     const closeDelete = () => {
         setIsDeleteOpen(false);
-    }
+    };
+    const openExists = () => {
+        setIsExistsOpen(true);
+    };
+    const closeExists = () => {
+        setIsExistsOpen(false);
+    };
 
     // FUNCTION TO FETCH ROLES
     const fetchRoles = async () => {
@@ -91,10 +99,11 @@ function GestionRole() {
                     </article>
                 </section>
             </section>
-            <CreateRol open={isCreateOpen} close={closeCreate} onCreated={fetchRoles} />
+            <CreateRole open={isCreateOpen} close={closeCreate} onCreated={fetchRoles} onExists={openExists} setId={setId} />
             <ViewRole open={isViewOpen} close={closeView} id={id} />
-            <EditRole open={isEditOpen} close={closeEdit} id={id} onEdit={fetchRoles} />
+            <EditRole open={isEditOpen} close={closeEdit} id={id} onEdit={fetchRoles} onExists={openExists} setId={setId} />
             <DeleteRole open={isDeleteOpen} close={closeDelete} id={id} onDelete={fetchRoles} />
+            <ExistsRole open={isExistsOpen} close={closeExists} id={id} onExists={fetchRoles} />
         </>
     );
 }

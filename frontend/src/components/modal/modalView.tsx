@@ -2,7 +2,7 @@
 import { IoIosCloseCircleOutline } from "react-icons/io";
 
 // IMPORT MODAL PROPERTIES
-import { ModalViewProps } from "../../interfaces/modalProps";
+import { ModalViewProps } from "../../interfaces/modalProps.interface";
 
 // CREATE THE modalView COMPONENT
 function ModalView({ isOpen, closeModal, data, content }: ModalViewProps) {

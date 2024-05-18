@@ -31,8 +31,9 @@ export interface ModalViewProps {
 export interface ModalEditProps {
     isOpen: boolean;
     closeModal: () => void;
-    submit: (name: string) => void;
-    initialName: string;
+    submit: (event: React.FormEvent) => void;
+    name: string;
+    setName: (name: string) => void;
     error: string;
     setError: (error: string) => void;
     content: {
@@ -45,6 +46,19 @@ export interface ModalEditProps {
 
 // DEFINITION THE PROPERTIES TYPES OF THE MODAL DELETE COMPONENT
 export interface ModalDeleteProps {
+    isOpen: boolean;
+    closeModal: () => void;
+    submit: () => void;
+    error: string;
+    content: {
+        title: string;
+        buttonYes: string;
+        buttonNo: string;
+    };
+}
+
+// DEFINITION THE PROPERTIES TYPES OF THE MODAL EXISTS COMPONENT
+export interface ModalExistsProps {
     isOpen: boolean;
     closeModal: () => void;
     submit: () => void;

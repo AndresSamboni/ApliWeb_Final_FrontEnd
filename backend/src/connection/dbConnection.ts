@@ -17,8 +17,7 @@ export async function connect() {
         user: DB_CONFIG.USER,
         password: DB_CONFIG.PASSWORD,
         database: DB_CONFIG.DATABASE,
-        port: DB_CONFIG.PORT,
-        connectionLimit: 10
+        port: DB_CONFIG.PORT
     });
 
     return CONNECTION;

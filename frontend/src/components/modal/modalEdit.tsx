@@ -2,32 +2,16 @@
 import { IoIosCloseCircleOutline } from "react-icons/io";
 
 // IMPORT MODAL PROPIERTIES
-import { ModalEditProps } from "../../interfaces/modalProps";
+import { ModalEditProps } from "../../interfaces/modalProps.interface";
 
 // IMPORT CSS STYLES
 import "../../styles/modalCreateRole.css";
-import { useEffect, useState } from "react";
 
 // CREATE THE ModalEdit COMPONENT
-function ModalEdit({ isOpen, closeModal, submit, initialName, error, setError, content }: Readonly<ModalEditProps>) {
-    // LOCAL STATE FOR INPUT VALUE
-    const [name, setName] = useState(initialName);
-
-    // UPDATE INPUT VALUE WHEN NAME PROP CHANGES
-    useEffect(() => {
-        setName(initialName);
-    }, [initialName]);
-
-    // HANDLE INPUT CHANGE
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+function ModalEdit({ isOpen, closeModal, submit, name, setName, error, setError, content }: Readonly<ModalEditProps>) {
+    const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value);
         setError('');
-    };
-
-    // VALIDATE THE SUBMIT FUNCTION
-    const onSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        submit(name);
     }
 
     // VALIDATE IF THE MODAL IS OPEN
@@ -54,16 +38,16 @@ function ModalEdit({ isOpen, closeModal, submit, initialName, error, setError, c
                     </header>
 
                     {/* BODY CONTENT */}
-                    <form onSubmit={onSubmit}>
+                    <form onSubmit={submit}>
                         <main className="flex flex-col w-full px-4 space-y-10">
                             <section className="sm:flex sm:items-start justify-center">
                                 <h1 className="text-xl font-semibold leading-6 text-center text-title" id="modal-title">{content.title}</h1>
                             </section>
                             <section className="relative">
-                                <input type="text" name="name" id="name" className={`mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md`} value={name} onChange={handleInputChange} placeholder=" " />
+                                <input type="text" name="name" id="name" className={`mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md`} value={name} onChange={inputChange} placeholder=" " />
                                 <label htmlFor="name" className={`absolute top-2 left-2 mt-1 ml-2 transition-all duration-200 ease-in-out pointer-events-none text-sm font-medium ${name ? 'text-content transform -translate-y-2 text-xs' : 'text-content'}`}>{content.field}</label>
                                 <section className="text-center">
-                                    <p className={`text-red-500 ${error ? '' : 'invisible'}`}>{error || 'Placeholder'}</p>
+                                    <p className={`text - red - 500 ${error ? '' : 'invisible'}`}>{error || 'Placeholder'}</p>
                                 </section>
                             </section>
                         </main>

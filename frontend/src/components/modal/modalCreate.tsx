@@ -2,7 +2,7 @@
 import { IoIosCloseCircleOutline } from "react-icons/io";
 
 // IMPORT MODAL PROPIERTIES
-import { ModalCreateProps } from "../../interfaces/modalProps";
+import { ModalCreateProps } from "../../interfaces/modalProps.interface";
 
 // IMPORT CSS STYLES
 import "../../styles/modalCreateRole.css";
