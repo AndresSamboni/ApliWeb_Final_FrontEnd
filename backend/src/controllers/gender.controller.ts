@@ -39,7 +39,7 @@ export async function setGender(req: Request, res: Response): Promise<Response> 
     try {
         // IDENTIFY THE DATA TO CREATE A NEW GENDER
         const NEW_GENDER: Gender = req.body;
-
+        
         // CONNECTION TO THE DATABASE
         const CONNECTION = await connect();
 
@@ -120,7 +120,26 @@ export async function updateGender(req: Request, res: Response) {
         
         // CONNECTION TO THE DATABASE
         const CONNECTION = await connect();
-    
+
+        // CHECK IF GENDER ALREADY EXISTS
+        const CHECK_QUERY = `
+            SELECT *
+            FROM tbl_gender
+            WHERE name = ?;
+        `;
+        const [RESULT] = await CONNECTION.query(CHECK_QUERY, UPDATE_GENDER.name);
+        const EXISTING_GENDER: Array<Gender> = RESULT as Array<Gender>;
+        if (EXISTING_GENDER.length > 0 && EXISTING_GENDER[0].state) {
+            return res.status(200).json({
+                message: "Gender already exists and it is active"
+            });
+        } else if (EXISTING_GENDER.length > 0 && !EXISTING_GENDER[0].state) {
+            return res.status(200).json({
+                message: "Gender already exists and it is inactive",
+                id_gender: EXISTING_GENDER[0].id
+            });
+        }
+
         // UPDATE GENDER
         const QUERY = `
             UPDATE tbl_gender
@@ -193,7 +212,7 @@ export async function enableGender(req: Request, res: Response):Promise<Response
 
         //RESPONSE OF THE FUNCTION
         return res.status(200).json({
-            message: "Gender disable successfully"
+            message: "Gender enable successfully"
         });
     } catch (error) {
         // HANDLE THE ERROR

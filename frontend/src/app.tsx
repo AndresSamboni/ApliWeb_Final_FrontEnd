@@ -23,7 +23,7 @@ function App() {
     }
   }, [userRole]);
   return (
-    isLogIn ? (
+    !isLogIn ? (
       <BrowserRouter>
         <header className="m-0 p-2 border-b-4 border-x-4 border-nav-border shadow-lg shadow-shadow bg-nav-bg">
           <Navbar userRole={userRole} setLogIn={setLogIn} />
