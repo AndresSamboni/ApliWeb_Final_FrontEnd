@@ -1,18 +1,24 @@
 import { Request, Response } from "express";
 import { connect } from "../connection/dbConnection";
 import { User } from "../interfaces/user.interface";
+import { RowDataPacket } from "mysql2";
+
+// Helper type to narrow down the type of query results
+type UserRow = User & RowDataPacket;
 
 // DEFINITION OF THE getUsers CONTROLLER TO OBTAIN THE LIST OF USERS
 export async function getUsers(req: Request, res: Response): Promise<Response> {
     try {
         const CONNECTION = await connect();
         const QUERY = `
-            SELECT *
-            FROM tbl_user
-            WHERE state = 1;
+            SELECT u.*, d.name AS document_type, g.name AS gender
+            FROM tbl_user u
+            JOIN tbl_document d ON u.document_id_fk = d.id
+            JOIN tbl_gender g ON u.gender_id_fk = g.id
+            WHERE u.state = 1;
         `;
-        const [rows] = await CONNECTION.query(QUERY);
-        const users: User[] = (rows as any[]).map(user => ({
+        const [rows] = await CONNECTION.query<UserRow[]>(QUERY);
+        const users: User[] = rows.map(user => ({
             ...user,
             state: Boolean(user.state)
         }));
@@ -37,7 +43,7 @@ export async function setUser(req: Request, res: Response): Promise<Response> {
             FROM tbl_user
             WHERE document_number = ?;
         `;
-        const [rows] = await CONNECTION.query(CHECK_QUERY, [NEW_USER.document_number]);
+        const [rows] = await CONNECTION.query<UserRow[]>(CHECK_QUERY, [NEW_USER.document_number]);
         const EXISTING_USER: Array<User> = rows as Array<User>;
         if (EXISTING_USER.length > 0 && EXISTING_USER[0].state) {
             return res.status(200).json({
@@ -72,15 +78,22 @@ export async function getUser(req: Request, res: Response): Promise<Response> {
         const { ID } = req.params;
         const CONNECTION = await connect();
         const QUERY = `
-            SELECT *
-            FROM tbl_user
-            WHERE id = ?;
+            SELECT u.*, d.name AS document_type, g.name AS gender
+            FROM tbl_user u
+            JOIN tbl_document d ON u.document_id_fk = d.id
+            JOIN tbl_gender g ON u.gender_id_fk = g.id
+            WHERE u.id = ?;
         `;
-        const [rows] = await CONNECTION.query(QUERY, [ID]);
-        const user: User = (rows as any[])[0] as User;
-        return res.status(200).json(user);
+        const [rows] = await CONNECTION.query<UserRow[]>(QUERY, [ID]);
+        if (rows.length > 0) {
+            const user = rows[0];
+            return res.status(200).json(user);
+        } else {
+            return res.status(404).json({ message: 'User not found' });
+        }
     } catch (error) {
         const ERR = error as Error;
+        console.error("Error fetching user:", ERR.message);
         return res.status(500).json({
             message: 'An error occurred while getting the user',
             error: ERR.message

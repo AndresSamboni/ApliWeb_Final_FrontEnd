@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { UserInterface } from "../../interfaces/userProps.interface";
-
-// IMPORT THE FETCH DATA FUNCTION
 import { fetchData } from "../../api/backend.api";
 
+interface UserDetail extends UserInterface {
+    document_type: string;
+    gender: string;
+}
+
 function VerUser(props: { userId: number }) {
-    const [user, setUser] = useState<UserInterface | null>(null);
+    const [user, setUser] = useState<UserDetail | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -13,7 +16,9 @@ function VerUser(props: { userId: number }) {
         const fetchUser = async () => {
             try {
                 setLoading(true);
-                await fetchData(`/user/${props.userId}`, setUser);
+                await fetchData(`/user/${props.userId}`, (data: UserDetail) => {
+                    setUser(data);
+                });
                 setLoading(false);
             } catch (error) {
                 setError("Error fetching user");
@@ -45,11 +50,14 @@ function VerUser(props: { userId: number }) {
                     <img className="mx-auto rounded-full w-32 h-32" src={user.photo || "./photoTest.jpeg"} alt="Foto de perfil" />
                 </div>
                 <div className="col-span-1 md:col-span-2">
+                    <p><strong>Nombre de Usuario:</strong> {user.user_name}</p>
                     <p><strong>Nombre Completo:</strong> {user.name} {user.last_name}</p>
+                    <p><strong>Tipo de Documento:</strong> {user.document_type}</p>
                     <p><strong>Número de Documento:</strong> {user.document_number}</p>
                     <p><strong>Email:</strong> {user.email}</p>
                     <p><strong>Teléfono:</strong> {user.phone || "No especificado"}</p>
                     <p><strong>Fecha de Nacimiento:</strong> {user.birthdate ? new Date(user.birthdate).toLocaleDateString() : "No especificada"}</p>
+                    <p><strong>Género:</strong> {user.gender}</p>
                     <p><strong>Estado:</strong> {user.state ? "Activo" : "Inactivo"}</p>
                 </div>
             </div>
