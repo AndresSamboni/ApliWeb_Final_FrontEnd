@@ -24,13 +24,17 @@ function EditUser({ open, close, userId, onEdit, onExists, setId }: EditUserProp
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [birthdate, setBirthdate] = useState('');
+    const [documentType, setDocumentType] = useState('');
+    const [gender, setGender] = useState('');
+    const [documentTypes, setDocumentTypes] = useState<{ id: number, name: string }[]>([]);
+    const [genders, setGenders] = useState<{ id: number, name: string }[]>([]);
     const [error, setError] = useState('');
     const [response, setResponse] = useState({ message: '', error: '', id_user: 0 });
 
     const submit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const data = { name, last_name: lastName, email, phone, birthdate };
+            const data = { name, last_name: lastName, email, phone, birthdate, document_id_fk: documentType, gender_id_fk: gender };
             await fetchData(`/user/update/${userId}`, setResponse, data);
         } catch (e) {
             const ERR = e as Error;
@@ -40,6 +44,8 @@ function EditUser({ open, close, userId, onEdit, onExists, setId }: EditUserProp
 
     useEffect(() => {
         fetchData(`/user/${userId}`, setUser);
+        fetchData(`/documents`, setDocumentTypes);
+        fetchData(`/genders`, setGenders);
     }, [setUser, userId]);
 
     useEffect(() => {
@@ -49,6 +55,8 @@ function EditUser({ open, close, userId, onEdit, onExists, setId }: EditUserProp
             setEmail(user.email);
             setPhone(user.phone ? user.phone.toString() : '');
             setBirthdate(user.birthdate ? new Date(user.birthdate).toISOString().split('T')[0] : '');
+            setDocumentType(user.document_id_fk ? user.document_id_fk.toString() : '');
+            setGender(user.gender_id_fk ? user.gender_id_fk.toString() : '');
         }
     }, [user]);
 
@@ -128,6 +136,32 @@ function EditUser({ open, close, userId, onEdit, onExists, setId }: EditUserProp
                             onChange={(e) => setBirthdate(e.target.value)}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2">Tipo de Documento</label>
+                        <select
+                            value={documentType}
+                            onChange={(e) => setDocumentType(e.target.value)}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        >
+                            <option value="">Seleccione un tipo de documento</option>
+                            {documentTypes.map(doc => (
+                                <option key={doc.id} value={doc.id}>{doc.name}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2">Género</label>
+                        <select
+                            value={gender}
+                            onChange={(e) => setGender(e.target.value)}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        >
+                            <option value="">Seleccione un género</option>
+                            {genders.map(g => (
+                                <option key={g.id} value={g.id}>{g.name}</option>
+                            ))}
+                        </select>
                     </div>
                     <div className="flex items-center justify-between">
                         <button
