@@ -3,11 +3,13 @@ import { Trash2, Edit, Eye } from 'react-feather';
 import { UserInterface } from '../../interfaces/userProps.interface';
 import VerUser from './verUser';
 import EditUser from './editUser';
+import DeleteUser from './deleteUser';
 import { fetchData } from "../../api/backend.api";
 
 function Gestion() {
     const [modalOpen, setModalOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<UserInterface | null>(null);
     const [users, setUsers] = useState<UserInterface[]>([]);
     const [loading, setLoading] = useState(true);
@@ -48,6 +50,15 @@ function Gestion() {
 
     const handleCloseEditModal = () => {
         setEditModalOpen(false);
+    };
+
+    const handleOpenDeleteModal = (user: UserInterface) => {
+        setSelectedUser(user);
+        setDeleteModalOpen(true);
+    };
+
+    const handleCloseDeleteModal = () => {
+        setDeleteModalOpen(false);
     };
 
     const handleViewUser = (user: UserInterface) => {
@@ -95,6 +106,14 @@ function Gestion() {
                     setId={(id: number) => setSelectedUser(users.find(user => user.id === id) || null)}
                 />
             )}
+            {deleteModalOpen && selectedUser && selectedUser.id !== undefined && (
+                <DeleteUser
+                    open={deleteModalOpen}
+                    close={handleCloseDeleteModal}
+                    userId={selectedUser.id}
+                    onDelete={fetchUsers}
+                />
+            )}
             <table className="w-full border-collapse border border-gray-400 mb-8">
                 <thead>
                     <tr>
@@ -129,7 +148,7 @@ function Gestion() {
                                 <button className="bg-blue-200 hover:bg-blue-300 text-blue-800 font-bold py-2 px-4 rounded" onClick={() => handleOpenEditModal(user)}>
                                     <Edit size={16} />
                                 </button>
-                                <button className="bg-red-200 hover:bg-red-300 text-red-800 font-bold py-2 px-4 rounded">
+                                <button className="bg-red-200 hover:bg-red-300 text-red-800 font-bold py-2 px-4 rounded" onClick={() => handleOpenDeleteModal(user)}>
                                     <Trash2 size={16} />
                                 </button>
                             </td>

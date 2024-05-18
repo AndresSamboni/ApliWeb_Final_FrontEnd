@@ -1,4 +1,3 @@
-// deleteUser.tsx
 import { useState, useEffect } from "react";
 import { fetchData } from "../../api/backend.api";
 
@@ -14,9 +13,11 @@ const responseType = "User disable successfully";
 function DeleteUser({ open, close, userId, onDelete }: DeleteUserProps) {
     const [error, setError] = useState<string | null>(null);
     const [response, setResponse] = useState({ message: '', error: '' });
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
     const submitInfo = async () => {
         try {
+            setIsDeleting(true);
             await fetchData(`/user/disable/${userId}`, setResponse);
         } catch (error) {
             const ERR = error as Error;
@@ -42,19 +43,30 @@ function DeleteUser({ open, close, userId, onDelete }: DeleteUserProps) {
             <div className="bg-white p-6 rounded shadow-md">
                 <h2 className="text-lg font-bold mb-4">¿Estás seguro de eliminar el usuario?</h2>
                 {error && <div className="text-red-500 mb-4">{error}</div>}
-                <div className="flex items-center justify-between mt-4">
-                    <button
-                        onClick={submitInfo}
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                        Si, borrar
-                    </button>
-                    <button
-                        onClick={close}
-                        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                        No, conservar
-                    </button>
+                <div className="flex items-center justify-center mt-4">
+                    {!isDeleting ? (
+                        <>
+                            <button
+                                onClick={submitInfo}
+                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            >
+                                Si, borrar
+                            </button>
+                            <button
+                                onClick={close}
+                                className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-4"
+                            >
+                                No, conservar
+                            </button>
+                        </>
+                    ) : (
+                        <button
+                            onClick={close}
+                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        >
+                            Cerrar
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
