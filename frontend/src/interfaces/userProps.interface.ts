@@ -1,4 +1,3 @@
-// CREATION THE USER INTERFACE TO DEFINE THE STRUCTURE OF THE USER TABLE
 export interface UserInterface {
     id?: number;
     name: string;
@@ -12,6 +11,8 @@ export interface UserInterface {
     password: string;
     state?: boolean;
     document_id_fk: number;
+    document_type: string; // Añadir este campo
     role_id_fk: number;
     gender_id_fk: number;
+    gender: string; // Añadir este campo para el nombre del género
 }
