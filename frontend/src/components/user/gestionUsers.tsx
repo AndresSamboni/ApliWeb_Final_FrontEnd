@@ -14,12 +14,14 @@ interface GestionProps {
 const Gestion: React.FC<GestionProps> = ({ userRole }) => {
     const navigate = useNavigate();
 
+    // Redirect to home page if the user does not have access
     useEffect(() => {
         if (userRole !== 'SUPER ADMINISTRADOR') {
-            navigate('/'); // Redirigir a la página de inicio si el usuario no tiene acceso
+            navigate('/');
         }
     }, [userRole, navigate]);
 
+    // State variables for managing modals, users, and filters
     const [modalOpen, setModalOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -30,14 +32,17 @@ const Gestion: React.FC<GestionProps> = ({ userRole }) => {
     const [error, setError] = useState<string | null>(null);
     const [filter, setFilter] = useState<string>('');
 
+    // Fetch users when the component mounts
     useEffect(() => {
         fetchUsers();
     }, []);
 
+    // Apply filter whenever the filter text or users list changes
     useEffect(() => {
         applyFilter();
     }, [filter, users]);
 
+    // Function to fetch users from the API
     const fetchUsers = async () => {
         try {
             setLoading(true);
@@ -55,6 +60,7 @@ const Gestion: React.FC<GestionProps> = ({ userRole }) => {
         }
     };
 
+    // Function to apply filter on users
     const applyFilter = () => {
         if (!filter) {
             setFilteredUsers(users);
@@ -68,6 +74,7 @@ const Gestion: React.FC<GestionProps> = ({ userRole }) => {
         ));
     };
 
+    // Functions to handle modal open/close
     const handleOpenModal = () => {
         setModalOpen(true);
     };
@@ -94,19 +101,23 @@ const Gestion: React.FC<GestionProps> = ({ userRole }) => {
         setDeleteModalOpen(false);
     };
 
+    // Function to view user details
     const handleViewUser = (user: UserInterface) => {
         setSelectedUser(user);
         setModalOpen(true);
     };
 
+    // Display loading indicator
     if (loading) {
         return <div>Cargando...</div>;
     }
 
+    // Display error message
     if (error) {
         return <div>{error}</div>;
     }
 
+    // Filter active users
     const activeUsers = filteredUsers.filter(user => user.state === true);
 
     return (
