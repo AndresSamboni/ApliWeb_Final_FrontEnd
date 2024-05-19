@@ -25,12 +25,18 @@ const Gestion: React.FC<GestionProps> = ({ userRole }) => {
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<UserInterface | null>(null);
     const [users, setUsers] = useState<UserInterface[]>([]);
+    const [filteredUsers, setFilteredUsers] = useState<UserInterface[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [filter, setFilter] = useState<string>('');
 
     useEffect(() => {
         fetchUsers();
     }, []);
+
+    useEffect(() => {
+        applyFilter();
+    }, [filter, users]);
 
     const fetchUsers = async () => {
         try {
@@ -39,6 +45,7 @@ const Gestion: React.FC<GestionProps> = ({ userRole }) => {
             await fetchData('/users', (data: UserInterface[]) => {
                 console.log('Response data:', data);
                 setUsers(data);
+                setFilteredUsers(data); // Initialize filtered users
             });
             setLoading(false);
         } catch (err) {
@@ -46,6 +53,19 @@ const Gestion: React.FC<GestionProps> = ({ userRole }) => {
             console.error('Error fetching users:', err);
             setLoading(false);
         }
+    };
+
+    const applyFilter = () => {
+        if (!filter) {
+            setFilteredUsers(users);
+            return;
+        }
+        const lowerCaseFilter = filter.toLowerCase();
+        setFilteredUsers(users.filter(user => 
+            user.id?.toString().includes(lowerCaseFilter) ||
+            user.document_number.toLowerCase().includes(lowerCaseFilter) ||
+            user.document_type.toLowerCase().includes(lowerCaseFilter)
+        ));
     };
 
     const handleOpenModal = () => {
@@ -87,17 +107,31 @@ const Gestion: React.FC<GestionProps> = ({ userRole }) => {
         return <div>{error}</div>;
     }
 
-    const activeUsers = users.filter(user => user.state === true);
+    const activeUsers = filteredUsers.filter(user => user.state === true);
 
     return (
         <div className="w-80 md:w-full mx-auto p-10 mt-15 mb-15">
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-2xl font-bold">Gestión de Usuarios</h1>
+            <div className="flex justify-end mb-8">
                 <button
-                    className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                    className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mb-2"
                     onClick={handleOpenModal}
                 >
                     Crear usuario
+                </button>
+            </div>
+            <div className="flex justify-between items-center mb-4">
+                <input
+                    type="text"
+                    placeholder="Filtrar por Tipo de Documento o Número de Documento"
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value)}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+                <button
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded ml-4"
+                    onClick={fetchUsers}
+                >
+                    Actualizar
                 </button>
             </div>
             {modalOpen && selectedUser && selectedUser.id !== undefined && (
