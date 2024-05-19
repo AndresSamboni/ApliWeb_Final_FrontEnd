@@ -2,38 +2,41 @@ import { useState, useEffect } from "react";
 import { fetchData } from "../../api/backend.api";
 
 interface DeleteUserProps {
-    open: boolean;
-    close: () => void;
-    userId: number;
-    onDelete: () => void;
+    open: boolean; // Whether the modal is open
+    close: () => void; // Function to close the modal
+    userId: number; // ID of the user to be deleted
+    onDelete: () => void; // Function to call when the user is deleted
 }
 
-const responseType = "User disable successfully";
+const responseType = "User disable successfully"; // Expected response message for successful deletion
 
 function DeleteUser({ open, close, userId, onDelete }: DeleteUserProps) {
-    const [error, setError] = useState<string | null>(null);
-    const [response, setResponse] = useState({ message: '', error: '' });
-    const [isDeleting, setIsDeleting] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null); // State to store any error messages
+    const [response, setResponse] = useState({ message: '', error: '' }); // State to store the response from the server
+    const [isDeleting, setIsDeleting] = useState<boolean>(false); // State to indicate if the deletion is in progress
 
+    // Function to submit the deletion request
     const submitInfo = async () => {
         try {
-            setIsDeleting(true);
-            await fetchData(`/user/disable/${userId}`, setResponse);
+            setIsDeleting(true); // Indicate that deletion is in progress
+            await fetchData(`/user/disable/${userId}`, setResponse); // Send request to disable user
         } catch (error) {
             const ERR = error as Error;
-            setError(ERR.message);
+            setError(ERR.message); // Set error message if request fails
         }
     };
 
+    // Effect to handle response after deletion request
     useEffect(() => {
         if (response.message === responseType) {
-            onDelete();
-            close();
+            onDelete(); // Call onDelete function if deletion was successful
+            close(); // Close the modal
         } else if (response.message) {
-            setError(response.message);
+            setError(response.message); // Set error message if there was an issue
         }
     }, [response]);
 
+    // Return null if the modal is not open
     if (!open) {
         return null;
     }

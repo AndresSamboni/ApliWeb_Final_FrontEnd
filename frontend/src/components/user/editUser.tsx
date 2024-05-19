@@ -11,6 +11,7 @@ interface EditUserProps {
     setId: (id: number) => void;
 }
 
+// Define response messages
 const responseType = {
     1: 'User already exists and it is active',
     2: 'User already exists and it is inactive',
@@ -31,6 +32,7 @@ function EditUser({ open, close, userId, onEdit, onExists, setId }: EditUserProp
     const [error, setError] = useState('');
     const [response, setResponse] = useState({ message: '', error: '', id_user: 0 });
 
+    // Handle form submission to update user
     const submit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
@@ -42,12 +44,14 @@ function EditUser({ open, close, userId, onEdit, onExists, setId }: EditUserProp
         }
     };
 
+    // Fetch user details, document types, and genders when component mounts or userId changes
     useEffect(() => {
         fetchData(`/user/${userId}`, setUser);
         fetchData(`/documents`, setDocumentTypes);
         fetchData(`/genders`, setGenders);
     }, [setUser, userId]);
 
+    // Populate form fields with user data when user object changes
     useEffect(() => {
         if (user) {
             setName(user.name);
@@ -60,6 +64,7 @@ function EditUser({ open, close, userId, onEdit, onExists, setId }: EditUserProp
         }
     }, [user]);
 
+    // Handle response after submitting the form
     useEffect(() => {
         if (response.message === responseType[1]) {
             setError(response.message);
@@ -78,11 +83,13 @@ function EditUser({ open, close, userId, onEdit, onExists, setId }: EditUserProp
         }
     }, [response]);
 
+    // Close modal and reset ID
     const closeModal = () => {
         setId(0);
         close();
     };
 
+    // Return null if modal is not open
     if (!open) {
         return null;
     }
@@ -92,6 +99,7 @@ function EditUser({ open, close, userId, onEdit, onExists, setId }: EditUserProp
             <div className="bg-white p-6 rounded shadow-md">
                 <h2 className="text-lg font-bold mb-4">Editar Usuario</h2>
                 <form onSubmit={submit}>
+                    {/* Form fields */}
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2">Nombre</label>
                         <input

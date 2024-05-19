@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { UserInterface } from "../../interfaces/userProps.interface";
 import { fetchData } from "../../api/backend.api";
 
+// Extending the UserInterface to include document_type and gender
 interface UserDetail extends UserInterface {
     document_type: string;
     gender: string;
@@ -12,10 +13,12 @@ function VerUser(props: { userId: number }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    // Fetch user data when the component mounts or userId changes
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 setLoading(true);
+                // Fetch user data from the backend API
                 await fetchData(`/user/${props.userId}`, (data: UserDetail) => {
                     setUser(data);
                 });
@@ -30,14 +33,17 @@ function VerUser(props: { userId: number }) {
         fetchUser();
     }, [props.userId]);
 
+    // Display loading indicator
     if (loading) {
         return <div>Cargando...</div>;
     }
 
+    // Display error message
     if (error) {
         return <div>{error}</div>;
     }
 
+    // Display message if user data is not found
     if (!user) {
         return <div>No se encontraron datos del usuario</div>;
     }
@@ -47,6 +53,7 @@ function VerUser(props: { userId: number }) {
             <h1 className="text-center text-3xl font-bold my-8">DATOS DEL USUARIO</h1>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="col-span-1 md:col-span-1">
+                    {/* Display user photo or a default photo */}
                     <img className="mx-auto rounded-full w-32 h-32" src={user.photo || "./photoTest.jpeg"} alt="Foto de perfil" />
                 </div>
                 <div className="col-span-1 md:col-span-2">
