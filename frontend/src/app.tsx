@@ -1,27 +1,23 @@
-// IMPORT THE LINKS
-import { FULL_LINKS, PARTIAL_LINKS } from './components/navbar/constants';
-
-// IMPORT REACT LIBRARIES AND COMPONENTS
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/home";
-import Login from "./components/login";
+import Login from "./components/login/login";
 import Navbar from "./components/navbar/navbar";
+import { getFullLinks, getPartialLinks } from './components/navbar/constants';
 
 function App() {
-  // SAVE THE SESION
   const [isLogIn, setLogIn] = useState(false);
-  const [userRole, setUserRole] = useState('SUPER ADMINISTRADOR'); //HUMBERTO NECESITO QUE CON EL Login ME DES EL ROL QUE TIENE EL USUARIO EN EL setUserRole
-  const [links, setLinks] = useState(FULL_LINKS);
+  const [userRole, setUserRole] = useState<string>(''); // Inicializa como cadena vacía
+  const [links, setLinks] = useState(() => getPartialLinks());
 
-  // CHECK THE USER ROLE
   useEffect(() => {
     if (userRole === 'SUPER ADMINISTRADOR') {
-      setLinks(FULL_LINKS);
+      setLinks(getFullLinks());
     } else {
-      setLinks(PARTIAL_LINKS);
+      setLinks(getPartialLinks());
     }
   }, [userRole]);
+
   return (
     !isLogIn ? (
       <BrowserRouter>
@@ -32,14 +28,17 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             {links.map(link => (
-              <Route key={links.indexOf(link)} path={link.src} element={link.component} />
+              <Route 
+                key={link.src} 
+                path={link.src} 
+                element={link.component} 
+              />
             ))}
           </Routes>
         </main>
       </BrowserRouter>
     ) : (
-      // HUMBERTO NECESITO QUE CON EL Login ME DES EL ROL QUE TIENE EL USUARIO EN EL setUserRole
-      <Login setIsLoggedIn={setLogIn} />
+      <Login setIsLoggedIn={setLogIn} setUserRole={setUserRole} />
     )
   );
 }

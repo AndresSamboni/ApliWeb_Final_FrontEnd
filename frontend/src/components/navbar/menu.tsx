@@ -1,12 +1,19 @@
-// IMPORT REACT LIBRARIES
+// IMPORT REACT LIBRARIES AND COMPONENTS
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 // IMPORT CONSTANTS
-import { FULL_LINKS, PARTIAL_LINKS } from './constants';
+import { getFullLinks, getPartialLinks } from './constants';
 
 // IMPORT NAVBAR INTERFACE
 import type { Menu } from '../../interfaces/navbarProps.interface';
+
+// DEFINE LINK TYPE
+interface LinkType {
+    src: string;
+    name: string;
+    component: JSX.Element;
+}
 
 // CREATE THE Menu COMPONENT
 function Menu({ userRole }: Readonly<Menu>) {
@@ -14,14 +21,14 @@ function Menu({ userRole }: Readonly<Menu>) {
     const [toggle, setToggle] = useState(false);
 
     // SAVE THE LINKS
-    const [links, setLinks] = useState(PARTIAL_LINKS);
+    const [links, setLinks] = useState<LinkType[]>(getPartialLinks());
 
     // CHECK THE USER ROLE
     useEffect(() => {
         if (userRole === 'SUPER ADMINISTRADOR') {
-            setLinks(FULL_LINKS);
+            setLinks(getFullLinks());
         } else {
-            setLinks(PARTIAL_LINKS);
+            setLinks(getPartialLinks());
         }
     }, [userRole]);
 
@@ -54,7 +61,7 @@ function Menu({ userRole }: Readonly<Menu>) {
                                 w-fit
                                 sm:w-3/4
                             '>
-                    {links.map(link => (
+                    {links.map((link: LinkType) => (
                         <Link
                             key={link.src}
                             to={link.src}

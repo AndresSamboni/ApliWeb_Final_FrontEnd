@@ -8,6 +8,7 @@ import { getRoles, setRole, getRole, updateRole, disableRole, enableRole } from 
 import { getGenders, setGender, getGender, updateGender, disableGender, enableGender } from '../controllers/gender.controller';
 import { getDocuments, setDocument, getDocument, updateDocument, disableDocument } from '../controllers/document.controller';
 import { setRegister, updateRegister } from '../controllers/register.controller';
+import authRoutes from './auth.routes'; // Importar las rutas de autenticación
 
 // DEFINITION OF ROUTES
 const router = Router();
@@ -19,7 +20,7 @@ router.route('/').get(indexWelcome);
 router.route('/users').post(getUsers); // GET ALL USERS
 router.route('/user/create').post(setUser); // CREATE A NEW USER
 router.route('/user/:ID').post(getUser); // GET A USER BY ID
-router.route('/user/update/:ID').post(updateUser) // UPDATE A USER BY ID
+router.route('/user/update/:ID').post(updateUser); // UPDATE A USER BY ID
 router.route('/user/disable/:ID').post(disableUser); // DELETE A USER BY ID
 router.route('/user/enable/:ID').post(enableUser); // RE-ACTIVATE A USER BY ID
 
@@ -49,6 +50,9 @@ router.route('/document/disable/:ID').post(disableDocument); // DELETE A DOCUMEN
 // ENDPOINTS TO REGISTER TABLE
 router.route('/register/document').post(setRegister); // CREATE A NEW REGISTER
 router.route('/register/update/document').post(updateRegister); // UPDATE A REGISTER BY ID
+
+// ENDPOINTS TO AUTHENTICATION
+router.use('/api/auth', authRoutes); // Usar las rutas de autenticación
 
 // EXPORT ROUTES
 export default router;
