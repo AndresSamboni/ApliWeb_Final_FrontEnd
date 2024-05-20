@@ -1,42 +1,69 @@
 import { useState} from 'react';
+import CreateUser from './createUser';
 import usersData from './usersEjemplo.json';
 import { Trash2, Edit, Eye } from 'react-feather';
 import User from './verUser';
 
-function Gestion() {
-    const [modalOpen, setModalOpen] = useState(false);
-    const [selectedUser, setSelectedUser] = useState<any | null>(null);
 
-    const handleOpenModal = () => {
+interface User {
+    name: string;
+    email: string;
+    // Otros campos que puedas necesitar
+}
+
+type ActionType = 'CREATE' | 'VIEW' | null;
+
+function Gestion() {
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
+    const [actionType, setActionType] = useState<ActionType>(null);
+
+    const handleOpenCreateModal = () => {
+        setSelectedUser(null); // Asegurarse de que no hay usuario seleccionado
+        setActionType('CREATE');
+        setModalOpen(true);
+    };
+
+    const handleViewUser = (user: User) => {
+        setSelectedUser(user);
+        setActionType('VIEW');
         setModalOpen(true);
     };
 
     const handleCloseModal = () => {
         setModalOpen(false);
+        setActionType(null);
     };
 
-    const handleViewUser = (user: any) => {
-        setSelectedUser(user);
-        setModalOpen(true); // Abrir el modal al hacer clic en el botón del ojo
+    const handleUserCreated = () => {
+        setModalOpen(false);
+        setActionType(null);
     };
 
     return (
         <div className="w-80 md:w-full mx-auto p-10 mt-15 mb-15">
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-2xl font-bold">Gestión de Usuarios</h1>
-                <button
-                    className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-                    onClick={handleOpenModal}
-                >
+                <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded" onClick={handleOpenCreateModal}>
                     Crear usuario
                 </button>
             </div>
             {modalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="bg-white p-6 rounded shadow-md">
-                        <h2 className="text-lg font-bold mb-4">Usuario Seleccionado</h2>
-                        {selectedUser && <User user={selectedUser} />} {/* Mostrar el componente User solo si hay un usuario seleccionado */}
-                        <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" onClick={handleCloseModal}>Cerrar</button>
+                        {actionType === 'CREATE' && (
+                            <>
+                                {/* <h2 className="text-lg font-bold mb-4">Crear Nuevo Usuario</h2> */}
+                                <CreateUser onUserCreated={handleUserCreated} />
+                            </>
+                        )}
+                        {actionType === 'VIEW' && selectedUser && (
+                            <>
+                                <h2 className="text-lg font-bold mb-4">Ver Usuario</h2>
+                                <User user={selectedUser} />
+                            </>
+                        )}
+                        <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mt-4" onClick={handleCloseModal}>Cerrar</button>
                     </div>
                 </div>
             )}
@@ -81,7 +108,6 @@ function Gestion() {
                             </tr>
                         ))}
                 </tbody>
-
             </table>
         </div>
     );

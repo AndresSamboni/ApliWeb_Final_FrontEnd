@@ -31,7 +31,7 @@ function User() {
                     <p><strong>Nombre Completo:</strong> {userData.name} {userData.last_name}</p>
                     <p><strong>Documento:</strong> {userData.document_type} {userData.document_number}</p>
                     <p><strong>Género:</strong> {userData.gender}</p>
-                    <p><strong>Contacto:</strong> Correo: {userData.email}, Teléfono: {userData.phone}</p>
+                    <p><strong>Contacto:</strong> {userData.email}, {userData.phone}</p>
                     <p><strong>Fecha de Nacimiento:</strong> {userData.birthDate}</p>
                 </div>
             </div>
