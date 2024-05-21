@@ -4,6 +4,7 @@ import { UserInterface } from '../../interfaces/userProps.interface';
 import VerUser from './verUser';
 import EditUser from './editUser';
 import DeleteUser from './deleteUser';
+import CreateUser from './createUser'; // Import the CreateUser component
 import { fetchData } from "../../api/backend.api";
 import { useNavigate } from 'react-router-dom';
 
@@ -25,6 +26,7 @@ const Gestion: React.FC<GestionProps> = ({ userRole }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [createUserModalOpen, setCreateUserModalOpen] = useState(false); // State for create user modal
     const [selectedUser, setSelectedUser] = useState<UserInterface | null>(null);
     const [users, setUsers] = useState<UserInterface[]>([]);
     const [filteredUsers, setFilteredUsers] = useState<UserInterface[]>([]);
@@ -74,11 +76,6 @@ const Gestion: React.FC<GestionProps> = ({ userRole }) => {
         ));
     };
 
-    // Functions to handle modal open/close
-    const handleOpenModal = () => {
-        setModalOpen(true);
-    };
-
     const handleCloseModal = () => {
         setModalOpen(false);
     };
@@ -99,6 +96,14 @@ const Gestion: React.FC<GestionProps> = ({ userRole }) => {
 
     const handleCloseDeleteModal = () => {
         setDeleteModalOpen(false);
+    };
+
+    const handleOpenCreateUserModal = () => {
+        setCreateUserModalOpen(true);
+    };
+
+    const handleCloseCreateUserModal = () => {
+        setCreateUserModalOpen(false);
     };
 
     // Function to view user details
@@ -125,7 +130,7 @@ const Gestion: React.FC<GestionProps> = ({ userRole }) => {
             <div className="flex justify-end mb-8">
                 <button
                     className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mb-2"
-                    onClick={handleOpenModal}
+                    onClick={handleOpenCreateUserModal}
                 >
                     Crear usuario
                 </button>
@@ -170,6 +175,13 @@ const Gestion: React.FC<GestionProps> = ({ userRole }) => {
                     close={handleCloseDeleteModal}
                     userId={selectedUser.id}
                     onDelete={fetchUsers}
+                />
+            )}
+            {createUserModalOpen && (
+                <CreateUser
+                    open={createUserModalOpen}
+                    close={handleCloseCreateUserModal}
+                    onUserCreated={fetchUsers}
                 />
             )}
             <table className="w-full border-collapse border border-gray-400 mb-8">
