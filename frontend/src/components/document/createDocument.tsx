@@ -12,14 +12,19 @@ function CreateDocument({ open, close, onCreated, onExists, setId }: { open: boo
     const [name, setName] = useState('');
     const [error, setError] = useState('');
     const [responseDocument, setResponseDocument] = useState({ message: '', error: '', id_document: 0 });
-    const [responseDocumentMaxId, setResponseDocumentMaxId] = useState();
+    const [responseDocumentMaxId, setResponseDocumentMaxId] = useState([{ last_id: 0 }]);
     const [responseRegister, setResponseRegister] = useState({ message: '', error: '' });
     const submitInfo = async () => {
         try {
             await DocumentModel.validate({ name });
             const documentData = { "name": name };
             await fetchData('/document/create', setResponseDocument, documentData);
-            await fetchData('/register/document/maxId', setResponseDocumentMaxId)
+            await fetchData('/register/document/maxId', setResponseDocumentMaxId);
+            const registerData = {
+                "user_id_fk": 1,
+                "document_id_fk": responseDocumentMaxId[0].last_id + 1
+            }
+            console.log(registerData);
         } catch (error) {
             const ERR = error as Error;
             setError(ERR.message);
@@ -27,16 +32,16 @@ function CreateDocument({ open, close, onCreated, onExists, setId }: { open: boo
     };
     const createRegister = async () => {
         try {
-            const maxId = responseDocumentMaxId[0].last_id + 1
-            const registerData = {
-                "user_id_fk": 1,
-                "document_id_fk": maxId
-            }
-            console.log(registerData);
-            await fetchData('/register/document', setResponseRegister, registerData);
+            fetchData('/register/document', setResponseRegister);
         } catch (error) {
             const ERR = error as Error;
             setError(ERR.message);
+        }
+        if (responseRegister.message === 'Register created successfully') {
+            onCreated();
+            close();
+        } else {
+            setError(responseRegister.message);
         }
     };
     useEffect(() => {
@@ -48,8 +53,6 @@ function CreateDocument({ open, close, onCreated, onExists, setId }: { open: boo
             close();
         } else if (responseDocument.message === responseType[3]) {
             createRegister();
-            onCreated();
-            close();
         } else {
             setError(responseDocument.message);
         }

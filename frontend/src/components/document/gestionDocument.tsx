@@ -5,6 +5,8 @@ import { fetchData } from "../../api/backend.api";
 import ExistsRole from "../role/existsRole";
 import CreateDocument from "./createDocument";
 import ViewDocument from "./viewDocument";
+import DeleteDocument from "./deleteDocument";
+import ExistsDocument from "./existsDocument";
 
 function GestionDocument() {
     const options = [
@@ -19,7 +21,7 @@ function GestionDocument() {
     const [documents, setDocuments] = useState([] as DocumentInterface[]);
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const [isViewOpen, setIsViewOpen] = useState(false);
-
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [isExistsOpen, setIsExistsOpen] = useState(false);
     const [id, setId] = useState(0);
 
@@ -42,8 +44,12 @@ function GestionDocument() {
     const closeView = () => {
         setIsViewOpen(false);
     };
-
-
+    const openDelete = () => {
+        setIsDeleteOpen(true);
+    };
+    const closeDelete = () => {
+        setIsDeleteOpen(false);
+    };
     const openExists = () => {
         setIsExistsOpen(true);
     };
@@ -79,9 +85,9 @@ function GestionDocument() {
                                     <tr key={document.id} className="text-center">
                                         <td className="p-2">{document.id}</td>
                                         <td className="p-2">{document.name}</td>
-                                        <td className="p-2">{document.start_date}</td>
-                                        <td className="p-2">{document.modify_date}</td>
-                                        <td className="p-2">{document.delete_date}</td>
+                                        <td className="p-2">{document.start_date ? document.start_date.split('T')[0] : ''}</td>
+                                        <td className="p-2">{document.modify_date ? document.modify_date.split('T')[0] : ''}</td>
+                                        <td className="p-2">{document.delete_date ? document.delete_date.split('T')[0] : ''}</td>
                                         <td className="p-2">{document.user}</td>
                                         <td className="p-2">
                                             <button
@@ -101,10 +107,10 @@ function GestionDocument() {
                                                 <Edit size={20} />
                                             </button>
                                             <button
-                                                // onClick={() => {
-                                                //     setId(data.id);
-                                                //     onDelete();
-                                                // }}
+                                                onClick={() => {
+                                                    setId(document.id);
+                                                    openDelete();
+                                                }}
                                                 className="bg-red-300 hover:bg-red-400 text-delete font-bold py-2 px-4 mx-1 rounded-full">
                                                 <Trash2 size={20} />
                                             </button>
@@ -118,7 +124,8 @@ function GestionDocument() {
             </section>
             <CreateDocument open={isCreateOpen} close={closeCreate} onCreated={fetchDocuments} onExists={openExists} setId={setId} />
             <ViewDocument open={isViewOpen} close={closeView} id={id} />
-            <ExistsRole open={isExistsOpen} close={closeExists} id={id} onExists={fetchDocuments} />
+            <DeleteDocument open={isDeleteOpen} close={closeDelete} id={id} onDelete={fetchDocuments} />
+            <ExistsDocument open={isExistsOpen} close={closeExists} id={id} onExists={fetchDocuments} />
         </>
     );
 }

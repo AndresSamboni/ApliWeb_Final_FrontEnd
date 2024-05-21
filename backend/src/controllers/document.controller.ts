@@ -24,8 +24,9 @@ export async function getDocuments(req: Request, res: Response): Promise<Respons
                 CONCAT(u.name, ' ', COALESCE(u.last_name, '')) as user
             FROM tbl_document d
             JOIN tbl_register r ON r.document_id_fk = d.id
-            JOIN tbl_user u ON u.id = d.id
-                WHERE d.state = 1;
+            JOIN tbl_user u ON u.id = r.user_id_fk
+            WHERE d.state = 1
+            ORDER BY d.id;
         `;
         const [RESULT] = await CONNECTION.query(QUERY);
     
@@ -103,11 +104,14 @@ export async function getDocument(req: Request, res: Response): Promise<Response
             SELECT
                 d.id,
                 d.name,
+                d.state,
                 r.start_date,
                 r.modify_date,
-                r.delete_date
+                r.delete_date,
+                CONCAT(u.name, ' ', COALESCE(u.last_name, '')) as user
             FROM tbl_document d
             JOIN tbl_register r ON r.document_id_fk = d.id
+            JOIN tbl_user u ON u.id = d.id
             WHERE d.state = 1 AND d.id = ?;
         `;
 

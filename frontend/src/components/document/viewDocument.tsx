@@ -8,6 +8,7 @@ function ViewDocument({ open, close, id }: { open: boolean; close: () => void; i
 
     useEffect(() => {
         fetchData(`/document/${id}`, setDocument);
+        console.log(document);
     }, [setDocument, id]);
 
     if (!open) {
@@ -39,9 +40,9 @@ function ViewDocument({ open, close, id }: { open: boolean; close: () => void; i
                             <section key={item.id} className="pb-5 px-1 m-1 sm:m-4 sm:px-4">
                                 <p className="text-content text-lg"><strong>Nombre:</strong> {item.name}</p>
                                 <p className="text-content text-lg"><strong>Estado:</strong> {item.state ? 'Activo' : 'Inactivo'}</p>
-                                <p className="text-content text-lg"><strong>Fecha de Creacipon:</strong> {item.start_date}</p>
-                                <p className="text-content text-lg"><strong>Fecha de Ultima Modificación:</strong> {item.modify_date}</p>
-                                <p className="text-content text-lg"><strong>Fecha de Ultima Deshabilitación:</strong> {item.delete_date}</p>
+                                <p className="text-content text-lg"><strong>Fecha de Creacipon:</strong> {item.start_date.split('T')[0]}</p>
+                                <p className="text-content text-lg"><strong>Fecha de Ultima Modificación:</strong> {item.modify_date.split('T')[0]}</p>
+                                <p className="text-content text-lg"><strong>Fecha de Ultima Deshabilitación:</strong> {item.delete_date.split('T')[0]}</p>
                                 <p className="text-content text-lg"><strong>Responsable:</strong> {item.user}</p>
 
                             </section>

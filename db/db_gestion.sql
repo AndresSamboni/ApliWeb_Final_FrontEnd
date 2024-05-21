@@ -46,9 +46,9 @@ CREATE TABLE IF NOT EXISTS tbl_user(
 
 -- CREATION OF THE TABLE tbl_register
 CREATE TABLE IF NOT EXISTS tbl_register(
-    start_date DATETIME NOT NULL,
-    modify_date DATETIME,
-    delete_date DATETIME,
+    start_date DATE NOT NULL,
+    modify_date DATE,
+    delete_date DATE,
     user_id_fk INT NOT NULL,
     document_id_fk INT NOT NULL,
     FOREIGN KEY (user_id_fk) REFERENCES tbl_user(id),
