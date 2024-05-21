@@ -81,15 +81,22 @@ INSERT INTO tbl_document(name) VALUES
 -- DATA INSERT INTO tbl_user
 INSERT INTO tbl_user(
     name,
+    last_name,
     document_number,
     email,
+    phone,
+    birthdate,
+    photo,
     user_name,
     password,
+    state,
     document_id_fk,
     role_id_fk,
     gender_id_fk
 ) VALUES
-('ADMIN', 1234567890, 'admin@gmail.com', 'admin', '', 2, 1, 6);
+('Edwin', 'Samboní', 1234567890, 'admin@gmail.com', 3110000000, '1890-11-30', NULL, 'admin', '$2b$10$.mOJLpBLGtMFd4MPpb2tZOzk3Tk0tAEjk0dkMj46qxUklWHmRS7gy', 1, 1, 1, 5),
+('Humberto', 'Fajardo', 0987654321, 'hfaja@gmail.com', 1110000000, '1990-11-30', NULL, 'user1', '$2b$10$OE6PyMNIIB39rvlunZo5SeKiP7cO.L/a/Ea1yblT/fAUgJMsKJkJG', 1, 3, 2, 1),
+('Pablo', 'Garzón', 6789012345, 'pgarza@gmail.com', 2220000000, '2024-05-21', NULL, 'user2', '$2b$10$kN6vDoDpxYdr0J1T9UocmuKpxFRzhetnKgioC.C2zP37EwjYpZUkK', 1, 2, 2, 1);
 
 -- DATA INSERT INTO tbl_register
 INSERT INTO tbl_register(

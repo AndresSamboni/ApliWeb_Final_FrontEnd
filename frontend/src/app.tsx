@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./components/home";
+import Home from "./components/home/home";
 import Login from "./components/login/login";
 import Navbar from "./components/navbar/navbar";
 import { getFullLinks, getPartialLinks } from './components/navbar/constants';
@@ -28,10 +28,10 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             {links.map(link => (
-              <Route 
-                key={link.src} 
-                path={link.src} 
-                element={link.component} 
+              <Route
+                key={link.src}
+                path={link.src}
+                element={link.component}
               />
             ))}
           </Routes>
