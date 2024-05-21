@@ -7,7 +7,7 @@ import { getUsers, setUser, getUser, updateUser, disableUser, enableUser } from 
 import { getRoles, setRole, getRole, updateRole, disableRole, enableRole } from '../controllers/role.controller';
 import { getGenders, setGender, getGender, updateGender, disableGender, enableGender } from '../controllers/gender.controller';
 import { getDocuments, setDocument, getDocument, updateDocument, disableDocument } from '../controllers/document.controller';
-import { setRegister, updateRegister } from '../controllers/register.controller';
+import { getDocumentId, setRegister, updateRegister } from '../controllers/register.controller';
 import authRoutes from './auth.routes'; // Importar las rutas de autenticación
 
 // DEFINITION OF ROUTES
@@ -50,6 +50,7 @@ router.route('/document/disable/:ID').post(disableDocument); // DELETE A DOCUMEN
 // ENDPOINTS TO REGISTER TABLE
 router.route('/register/document').post(setRegister); // CREATE A NEW REGISTER
 router.route('/register/update/document').post(updateRegister); // UPDATE A REGISTER BY ID
+router.route('/register/document/maxId').post(getDocumentId); // UPDATE A REGISTER BY ID
 
 // ENDPOINTS TO AUTHENTICATION
 router.use('/api/auth', authRoutes); // Usar las rutas de autenticación

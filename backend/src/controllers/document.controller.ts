@@ -20,10 +20,12 @@ export async function getDocuments(req: Request, res: Response): Promise<Respons
                 d.name,
                 r.start_date,
                 r.modify_date,
-                r.delete_date
+                r.delete_date,
+                CONCAT(u.name, ' ', COALESCE(u.last_name, '')) as user
             FROM tbl_document d
             JOIN tbl_register r ON r.document_id_fk = d.id
-            WHERE d.state = 1;
+            JOIN tbl_user u ON u.id = d.id
+                WHERE d.state = 1;
         `;
         const [RESULT] = await CONNECTION.query(QUERY);
     

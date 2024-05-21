@@ -1,6 +1,6 @@
 // IMPORT REACT COMPONENTS
 import GestionRole from "../role/gestionRole";
-import Document from "../document";
+import GestionDocument from "../document/gestionDocument";
 import GestionGender from '../gender/gestionGender'
 import GestionUser from "../user/gestionUsers";
 
@@ -11,11 +11,11 @@ export const S_LOGOUT = 30;
 export const getFullLinks = () => [
     { src: '/roles', name: 'Roles', component: <GestionRole /> },
     { src: '/gender', name: 'Géneros', component: <GestionGender /> },
-    { src: '/documents', name: 'Documentos', component: <Document /> },
+    { src: '/documents', name: 'Documentos', component: <GestionDocument /> },
     { src: '/users', name: 'Usuarios', component: <GestionUser userRole="SUPER ADMINISTRADOR" /> } // Pasar userRole aquí
 ];
 export const getPartialLinks = () => [
     { src: '/roles', name: 'Roles', component: <GestionRole /> },
     { src: '/gender', name: 'Géneros', component: <GestionGender /> },
-    { src: '/documents', name: 'Documentos', component: <Document /> }
+    { src: '/documents', name: 'Documentos', component: <GestionDocument /> }
 ];

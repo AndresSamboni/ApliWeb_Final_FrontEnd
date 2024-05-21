@@ -12,17 +12,18 @@ export async function setRegister(req: Request, res: Response): Promise<Response
     try {
         // IDENTIFY THE DATA TO CREATE A NEW REGISTER
         const NEW_REGISTER: Register = req.body;
-
+        console.log(NEW_REGISTER)
         // CONNECTION TO THE DATABASE
         const CONNECTION = await connect();
 
         // CREATION THE QUERY
         const QUERY = `
-            INSERT INTO tbl_register SET ?;
+            INSERT INTO tbl_register VALUES
+            (NOW(), NULL, NULL, ${NEW_REGISTER.user_id_fk}, ${NEW_REGISTER.document_id_fk});
         `;
 
         // EXECUTE THE QUERY
-        await CONNECTION.query(QUERY, [NEW_REGISTER]);
+        await CONNECTION.query(QUERY);
 
         // RESPONSE OF THE FUNCTION
         return res.status(200).json({
@@ -64,6 +65,33 @@ export async function updateRegister(req: Request, res: Response): Promise<Respo
         const ERR = error as Error;
         return res.status(500).json({
             message: 'An error occurred while updating the register',
+            error: ERR.message
+        });
+    }
+}
+
+export async function getDocumentId(req: Request, res: Response): Promise<Response> {
+    try {
+        // CONNECTION TO THE DATABASE
+        const CONNECTION = await connect();
+
+        // CREATION THE QUERY
+        const QUERY = `
+            SELECT
+                MAX(id) as last_id
+            FROM tbl_document;
+        `;
+
+        // EXECUTE THE QUERY
+        const [RESULT] = await CONNECTION.query(QUERY);
+        console.log(RESULT);
+        // RESPONSE OF THE FUNCTION
+        return res.status(200).json(RESULT);
+    } catch (error) {
+        // HANDLE THE ERROR
+        const ERR = error as Error;
+        return res.status(500).json({
+            message: 'An error occurred while creating the register',
             error: ERR.message
         });
     }

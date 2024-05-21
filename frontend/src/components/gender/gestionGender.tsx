@@ -82,7 +82,7 @@ function GestionGender() {
                 </h1>
                 <div className="flex justify-center">
                     <section className="flex justify-end w-3/4">
-                        <button onClick={openCreate} className="m-o p-2 rounded-lg bg-submit hover:bg-green-700 text-white">
+                        <button onClick={openCreate} className="m-0 p-2 rounded-lg bg-submit hover:bg-green-700 text-white">
                             Crear Género
                         </button>
                     </section>
