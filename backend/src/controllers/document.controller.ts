@@ -15,9 +15,15 @@ export async function getDocuments(req: Request, res: Response): Promise<Respons
     
         // GET ALL THE DOCUMENTS
         const QUERY = `
-            SELECT *
-            FROM tbl_document
-            WHERE state = 1;
+            SELECT
+                d.id,
+                d.name,
+                r.start_date,
+                r.modify_date,
+                r.delete_date
+            FROM tbl_document d
+            JOIN tbl_register r ON r.document_id_fk = d.id
+            WHERE d.state = 1;
         `;
         const [RESULT] = await CONNECTION.query(QUERY);
     
@@ -92,9 +98,15 @@ export async function getDocument(req: Request, res: Response): Promise<Response
 
         // CREATION THE QUERY
         const QUERY = `
-            SELECT *
-            FROM tbl_document
-            WHERE id = ?;
+            SELECT
+                d.id,
+                d.name,
+                r.start_date,
+                r.modify_date,
+                r.delete_date
+            FROM tbl_document d
+            JOIN tbl_register r ON r.document_id_fk = d.id
+            WHERE d.state = 1 AND d.id = ?;
         `;
 
         // EXECUTE THE QUERY

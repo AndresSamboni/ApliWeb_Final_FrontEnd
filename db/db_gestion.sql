@@ -104,4 +104,8 @@ INSERT INTO tbl_register(
     user_id_fk,
     document_id_fk
 ) VALUES
-(NOW(), 1, 2);
+(NOW(), 1, 1),
+(NOW(), 2, 2),
+(NOW(), 3, 3),
+(NOW(), 2, 4),
+(NOW(), 1, 5);
